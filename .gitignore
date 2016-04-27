@@ -1,0 +1,10 @@
+.DS_Store
+.gradle
+build/
+*.~*
+*.swp
+*.bak
+*.class
+node_modules
+dist
+npm-debug.log
