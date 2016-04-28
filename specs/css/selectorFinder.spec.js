@@ -75,6 +75,13 @@ describe('CSS-Selector Finder Testing', function () {
       expect(foundCssSelectors._class).toEqual(['xyz_abc', 'icon']);
     });
 
+    it('should find "language" and "deactive" ', function () {
+      var foundCssSelectors = s.findCssSelectors('.language span.deactive{');
+      expect(foundCssSelectors._class).toEqual(['language', 'deactive']);
+    });
+
+
+
   });
 
   describe('Find all css id selectors', function () {

@@ -27,6 +27,7 @@ class SelectorFinder {
       text.forEach((classs)=> {
         currentClass = classs.match(/(\.[^ ):]+)/)[0];
         currentClass = currentClass.split('.');
+
         currentClass.forEach((c)=> {
           if (c && this.isCssSelectorValid(c)) {
             c = this.filterSelector(c);
@@ -48,13 +49,13 @@ class SelectorFinder {
     if (idRegex.test(text)) {
       text = text.match(idRegex);
 
-      var currentClass;
+      var currentId;
       text.forEach((_id) => {
-        currentClass = _id.match(/(\#[^ .):]+)/)[0];
-        currentClass = currentClass.split(splitter);
+        currentId = _id.match(/(\#[^ .):]+)/)[0];
+        currentId = currentId.split(splitter);
 
-        currentClass.forEach((c) => {
-          if (c && this.isCssSelectorValid(c)) {
+        currentId.forEach((c) => {
+          if (c && this.isCssSelectorValid('#' + c)) {
             c = this.filterSelector(c);
             this.pushIntoSelectors(c, selector);
           }
@@ -113,7 +114,7 @@ class SelectorFinder {
     return /^\D.*$/.test(selector) &&
       selector.indexOf('*') === -1 &&
       selector.indexOf(';') === -1 &&
-      !this.isColor('#' + selector);
+      !this.isColor(selector);
   }
 
   removeSpecialChars (text) {
