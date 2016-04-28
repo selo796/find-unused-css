@@ -116,16 +116,19 @@ class SelectorFinder {
       !this.isColor('#' + selector);
   }
 
-  removeComma (text) {
-    if (text.indexOf(',') > -1) {
-      return text.substring(0, text.indexOf(','));
+  removeSpecialChars (text) {
+    let specialChars = [',', '{'];
+    for (let char of specialChars) {
+      if (text.indexOf(char) > -1) {
+        text = text.substring(0, text.indexOf(char));
+      }
     }
 
     return text;
   }
 
   filterSelector (selector) {
-    return this.removeComma(selector);
+    return this.removeSpecialChars(selector);
   }
 
 }
