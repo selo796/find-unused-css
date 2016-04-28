@@ -3,7 +3,7 @@
 
 require('babel-core/register');
 
-var SelectorFinder = require('../../src/css/selectorFinder').SelectorFinder;
+var SelectorFinder = require('../../src/css/selectorFinder');
 
 describe('CSS-Selector Finder Testing', function () {
 

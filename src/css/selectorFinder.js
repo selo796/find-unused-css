@@ -127,3 +127,4 @@ export class SelectorFinder {
   }
 
 }
+module.exports = SelectorFinder;

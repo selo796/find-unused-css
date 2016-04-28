@@ -2,7 +2,7 @@
 
 require('babel-core/register');
 
-var fileFinder = require( '../../src/modules/fileFinder').FileFinder;
+var fileFinder = require( '../../src/modules/fileFinder');
 
 describe('File Finder Testing', function() {
 

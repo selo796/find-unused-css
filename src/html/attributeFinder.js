@@ -1,7 +1,7 @@
 var htmlparser = require('htmlparser2');
 var fs = require('fs');
 
-export class AttributeFinder {
+class AttributeFinder {
 
     constructor() {
       this.attributes = {
@@ -62,3 +62,5 @@ export class AttributeFinder {
       });
     }
 }
+
+module.exports = AttributeFinder;

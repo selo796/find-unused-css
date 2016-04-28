@@ -1,8 +1,8 @@
 require('babel-core/register');
 
-var FileFinderModule = require('./modules/fileFinder').FileFinder,
-SelectorFinderModule = require('./css/selectorFinder').SelectorFinder,
-AttributeFinderModele = require('./html/attributeFinder').AttributeFinder,
+var FileFinderModule = require('./modules/fileFinder'),
+SelectorFinderModule = require('./css/selectorFinder'),
+AttributeFinderModele = require('./html/attributeFinder'),
 LineByLineReader = require('line-by-line'),
 chalk = require('chalk'),
 readline = require('readline');

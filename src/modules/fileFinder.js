@@ -1,6 +1,6 @@
 var find = require('find');
 
-export class FileFinder {
+class FileFinder {
 
     constructor() {
       this.fileExtensionObj = {
@@ -35,3 +35,5 @@ export class FileFinder {
     }
 
 }
+
+module.exports = FileFinder;

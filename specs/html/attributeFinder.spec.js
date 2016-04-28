@@ -2,7 +2,7 @@
 
 require('babel-core/register');
 
-var attributeFinder = require( '../../src/html/attributeFinder').AttributeFinder;
+var attributeFinder = require( '../../src/html/attributeFinder');
 
 var filePath = './specs/html/testAttributeFinderInHtml/test.html';
 var filePath2 = './specs/html/testAttributeFinderInHtml/test2.html';
