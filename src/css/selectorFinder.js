@@ -1,4 +1,6 @@
-export class SelectorFinder {
+'use strict';
+
+class SelectorFinder {
 
   constructor() {
     this.selectors = {

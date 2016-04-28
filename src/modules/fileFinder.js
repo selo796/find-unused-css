@@ -1,3 +1,5 @@
+'use strict';
+
 var find = require('find');
 
 class FileFinder {
@@ -7,7 +9,7 @@ class FileFinder {
          JS:/\.js$/,
          HTML:/\.html$/,
          CSS:/\.css$/
-      }
+      };
     }
 
     getFiles (__dirname, fileExtension) {
