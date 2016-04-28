@@ -2,6 +2,7 @@
 
 This tool is currently in development.
 
+<!---
 ## Getting Started
 
 
@@ -16,3 +17,4 @@ Once the module has been installed, you can run it with this command:
 ```
 find-unused-css
 ```
+-->
