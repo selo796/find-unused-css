@@ -25,8 +25,7 @@ class SelectorFinder {
 
       // needs to be refactored
       text.forEach((classs)=> {
-        currentClass = classs.match(/(\.[^ ):]+)/)[0];
-        currentClass = currentClass.split('.');
+        currentClass = classs.split('.');
 
         currentClass.forEach((c)=> {
           if (c && this.isCssSelectorValid(c)) {
@@ -43,7 +42,7 @@ class SelectorFinder {
   }
 
   findIdSelectors (text) {
-    const idRegex = /(\#[^ ):]+)/g;
+    const idRegex = /(\#[^ .):]+)/g;
     const splitter = '#';
     const selector = '_id';
     if (idRegex.test(text)) {
@@ -51,8 +50,7 @@ class SelectorFinder {
 
       var currentId;
       text.forEach((_id) => {
-        currentId = _id.match(/(\#[^ .):]+)/)[0];
-        currentId = currentId.split(splitter);
+        currentId = _id.split(splitter);
 
         currentId.forEach((c) => {
           if (c && this.isCssSelectorValid('#' + c)) {

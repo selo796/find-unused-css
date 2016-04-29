@@ -25,9 +25,9 @@ After running this command you will get two questions from command line
   Enter a target css file e.g `dist/css/main.css`
 
   2. **Path of your html directory**  
-  Enter a path of html directory which you would like to scan for used css selectors e.g `dist/html`.
+  Enter a path of html directory which you would like to scan for unused css selectors e.g `dist/html`.
 
-Once you answer these two questions, your css selectors are scanned for given directory.
+Once you answered these two questions, your css selectors are scanned for given directory.
 
 **Currently supported css selectors are `class (.class)` and `id (#id)` selectors.**
 
@@ -50,4 +50,4 @@ Issues can be reported on the [issue tracker](https://github.com/selo796/find-un
  - Support for attribute selectors
  - Support for AngularJS
 
-I am very happy for ever feedback...
+I am very happy for every feedback...

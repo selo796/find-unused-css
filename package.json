@@ -1,7 +1,7 @@
 {
   "name": "find-unused-css",
   "description": "Find unused css selectors in your project",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Selcuk Imal <selcuk.imal.dev@gmail.com>",
   "homepage": "https://github.com/selo796/find-unused-css",
   "bugs": "https://github.com/selo796/find-unused-css/issues",
@@ -14,7 +14,7 @@
     "unusedcss",
     "find",
     "search",
-    "analze",
+    "analyze",
     "findcss",
     "uncss",
     "css"

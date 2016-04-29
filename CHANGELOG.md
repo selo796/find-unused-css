@@ -1,5 +1,8 @@
 # find-unused-css Changelog
 
+## v0.2.1
+  * Improved README.md
+
 ## v0.2.0
   * Improved css selector engine
   * Preparation as a global npm package

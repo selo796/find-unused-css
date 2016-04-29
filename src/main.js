@@ -44,7 +44,7 @@ function run(cssPath, htmlDirectory) {
         SelectorFinder.findCssSelectors(line);
       });
 
-      lr.on('end', function () {
+      lr.on('end', () => {
         Promise.all(attributePromises).then(function (value) {
           attributes = value [0];
           var countUnusedClasses = 0;
@@ -71,9 +71,10 @@ function run(cssPath, htmlDirectory) {
             chalk.bgGreen.bold(SelectorFinder.selectors._id.length));
           console.log('Number of unused id selectors: ', chalk.bgGreen.bold(countUnusedIds));
 
-        }, function (reason) {
-
+        }, (reason) => {
+          rl.close();
           throw new Error(reason);
+
         });
       });
 
