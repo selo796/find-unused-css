@@ -5,7 +5,8 @@ SelectorFinderModule = require('./css/selectorFinder'),
 AttributeFinderModele = require('./html/attributeFinder'),
 LineByLineReader = require('line-by-line'),
 chalk = require('chalk'),
-readline = require('readline');
+readline = require('readline')
+Spinner = require('cli-spinner').Spinner;
 
 var FileFinder = new FileFinderModule(),
 SelectorFinder = new SelectorFinderModule(),
@@ -25,6 +26,9 @@ rl.question('Path of your css file? ', (cssPath) => {
 });
 
 function run(cssPath, htmlDirectory) {
+  var spinner = new Spinner('Analyzing .. %s');
+  spinner.setSpinnerString('|/-\\');
+  spinner.start();
   var promise = FileFinder.getFiles(htmlDirectory, 'HTML');
   promise.then((result) => {
     if (result) {
@@ -41,7 +45,7 @@ function run(cssPath, htmlDirectory) {
       lr.on('error', onLineError);
 
       lr.on('line', (line) => {
-        SelectorFinder.findCssSelectors(line);
+        SelectorFinder.find(line);
       });
 
       lr.on('end', () => {
@@ -63,16 +67,17 @@ function run(cssPath, htmlDirectory) {
             }
           });
 
-          console.log('Number of all css classes: ',
-            chalk.bgGreen.bold(SelectorFinder.selectors._class.length));
-          console.log('Number of unused css classes: ', chalk.bgGreen.bold(countUnusedClasses));
+          console.log(chalk.bgBlack(chalk.yellow('Number of scanned html files: ' +result.length)));
+          console.log(chalk.bgBlack(chalk.yellow('Number of all css classes: ',SelectorFinder.selectors._class.length)));
+          console.log(chalk.bgBlack(chalk.yellow('Number of unused css classes: ', countUnusedClasses)));
 
-          console.log('Number of all id selectors: ',
-            chalk.bgGreen.bold(SelectorFinder.selectors._id.length));
-          console.log('Number of unused id selectors: ', chalk.bgGreen.bold(countUnusedIds));
+          console.log( chalk.bgBlack(chalk.yellow('Number of all id selectors: ', SelectorFinder.selectors._id.length)));
+          console.log(chalk.bgBlack(chalk.yellow('Number of unused id selectors: ', countUnusedIds)));
 
         }, (reason) => {
           rl.close();
+          spinner.stop();
+
           throw new Error(reason);
 
         });
@@ -83,9 +88,12 @@ function run(cssPath, htmlDirectory) {
     }
 
     rl.close();
+    spinner.stop();
 
   }, (err) => {
     rl.close();
+    spinner.stop();
+
     console.log(err);
     throw new Error(err);
   });
@@ -93,6 +101,6 @@ function run(cssPath, htmlDirectory) {
 
 
 function onLineError(err) {
-  console.log('An error occurs while reading your css. Please check:', err);
+  console.log('An error occurs while reading your css file. Please check:', err);
   rl.close();
 }

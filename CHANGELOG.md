@@ -2,6 +2,8 @@
 
 ## v0.2.1
   * Improved README.md
+  * Added command line spinner
+  * Improved selectorFinder
 
 ## v0.2.0
   * Improved css selector engine

@@ -13,7 +13,7 @@ class SelectorFinder {
     this.lineCounter = 0;
   }
 
-  findClasses (text) {
+  _findClassSelectors (text) {
     const classRegex = /(\.[^ ):]+)/g;
     const splitter = '.';
     const selector = '_class';
@@ -23,10 +23,9 @@ class SelectorFinder {
 
       var currentClass;
 
-      // needs to be refactored
-      text.forEach((classs)=> {
-        currentClass = classs.split('.');
 
+      text.forEach((_class)=> {
+        currentClass = _class.split(splitter);
         currentClass.forEach((c)=> {
           if (c && this.isCssSelectorValid(c)) {
             c = this.filterSelector(c);
@@ -41,7 +40,7 @@ class SelectorFinder {
 
   }
 
-  findIdSelectors (text) {
+  _findIdSelectors (text) {
     const idRegex = /(\#[^ .):]+)/g;
     const splitter = '#';
     const selector = '_id';
@@ -64,7 +63,7 @@ class SelectorFinder {
     return this.selectors;
   }
 
-  findCssSelectors(text) {
+  find(text) {
     this.lineCounter++;
     text = text.trim();
 
@@ -76,8 +75,8 @@ class SelectorFinder {
       return this.selectors;
     }
 
-    this.findClasses(text);
-    this.findIdSelectors(text);
+    this._findClassSelectors(text);
+    this._findIdSelectors(text);
 
     return this.selectors;
   }
