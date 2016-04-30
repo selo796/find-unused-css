@@ -13,6 +13,7 @@ class SelectorFinder {
     this.isCommentStarted = false;
     this.isCommentEnded = false;
     this.lineCounter = 0;
+    this.filter = new SelectorFilter();
   }
 
   _findClassSelectors (text) {
@@ -30,7 +31,7 @@ class SelectorFinder {
         currentClass = _class.split(splitter);
         currentClass.forEach((c)=> {
           if (c && this.isCssSelectorValid(c)) {
-            c = this.filterSelector(c);
+            c = this.filter.filterSelector(c);
             this.pushIntoSelectors(c, selector);
           }
         });
@@ -55,7 +56,7 @@ class SelectorFinder {
 
         currentId.forEach((c) => {
           if (c && this.isCssSelectorValid('#' + c)) {
-            c = this.filterSelector(c);
+            c = this.filter.filterSelector(c);
             this.pushIntoSelectors(c, selector);
           }
         });
@@ -114,21 +115,6 @@ class SelectorFinder {
       selector.indexOf('*') === -1 &&
       selector.indexOf(';') === -1 &&
       !this.isColor(selector);
-  }
-
-  removeSpecialChars (text) {
-    let specialChars = [',', '{'];
-    for (let char of specialChars) {
-      if (text.indexOf(char) > -1) {
-        text = text.substring(0, text.indexOf(char));
-      }
-    }
-
-    return text;
-  }
-
-  filterSelector (selector) {
-    return this.removeSpecialChars(selector);
   }
 
 }
