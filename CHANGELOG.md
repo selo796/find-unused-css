@@ -1,5 +1,8 @@
 # find-unused-css Changelog
 
+## v0.2.3
+  * Cleaned up dev dependencies
+
 ## v0.2.2
   * Cleaned up dependencies
 
