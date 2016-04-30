@@ -1,7 +1,5 @@
 'use strict';
 
-require('babel-core/register');
-
 var attributeFinder = require( '../../src/html/attributeFinder');
 
 var filePath = './specs/html/testAttributeFinderInHtml/test.html';

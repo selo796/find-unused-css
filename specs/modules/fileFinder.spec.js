@@ -1,7 +1,5 @@
 'use strict';
 
-require('babel-core/register');
-
 var fileFinder = require( '../../src/modules/fileFinder');
 
 describe('File Finder Testing', function() {

@@ -1,8 +1,6 @@
 /* global require, describe, expect, it */
 'use strict';
 
-require('babel-core/register');
-
 var SelectorFinder = require('../../src/css/selectorFinder');
 
 describe('CSS-Selector Finder Testing', function () {
