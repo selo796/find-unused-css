@@ -2,11 +2,11 @@
 
 class SelectorFilter {
 
-  constructor () {
+  constructor() {
     this.specialChars = [',', '{'];
   }
 
-  _removeSpecialChars (text) {
+  _removeSpecialChars(text) {
     for (let char of this.specialChars) {
       if (text.indexOf(char) > -1) {
         text = text.substring(0, text.indexOf(char));
@@ -16,7 +16,7 @@ class SelectorFilter {
     return text;
   }
 
-  filterSelector (selector) {
+  filterSelector(selector) {
     return this._removeSpecialChars(selector);
   }
 

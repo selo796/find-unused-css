@@ -1,14 +1,14 @@
-var FileFinderModule = require('./modules/fileFinder'),
-SelectorFinderModule = require('./css/selectorFinder'),
-AttributeFinderModele = require('./html/attributeFinder'),
-LineByLineReader = require('line-by-line'),
-chalk = require('chalk'),
-readline = require('readline')
-Spinner = require('cli-spinner').Spinner;
+var FileFinderModule = require('./modules/fileFinder');
+var SelectorFinderModule = require('./css/selectorFinder');
+var AttributeFinderModele = require('./html/attributeFinder');
+var LineByLineReader = require('line-by-line');
+var chalk = require('chalk');
+var readline = require('readline');
+var Spinner = require('cli-spinner').Spinner;
 
-var FileFinder = new FileFinderModule(),
-SelectorFinder = new SelectorFinderModule(),
-AttributeFinder = new AttributeFinderModele();
+var FileFinder = new FileFinderModule();
+var SelectorFinder = new SelectorFinderModule();
+var AttributeFinder = new AttributeFinderModele();
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -38,7 +38,9 @@ function run(cssPath, htmlDirectory) {
         attributePromises.push(AttributeFinder.findAttribute(htmlFile));
       }
 
-      var lr = new LineByLineReader(cssPath, { encoding: 'utf8', skipEmptyLines: false });
+      var lr = new LineByLineReader(cssPath, {
+        encoding: 'utf8', skipEmptyLines: false
+      });
 
       lr.on('error', onLineError);
 
@@ -47,29 +49,29 @@ function run(cssPath, htmlDirectory) {
       });
 
       lr.on('end', () => {
-        Promise.all(attributePromises).then(function (value) {
+        Promise.all(attributePromises).then(function(value) {
           attributes = value [0];
           var countUnusedClasses = 0;
           var countUnusedIds = 0;
-          SelectorFinder.selectors._class.forEach(function (_class) {
+          SelectorFinder.selectors._class.forEach(function(_class) {
             if (attributes._class.indexOf(_class) === -1) {
               console.log('Class "' + chalk.bgYellow.bold(_class) + '" not used');
               countUnusedClasses++;
             }
           });
 
-          SelectorFinder.selectors._id.forEach(function (_id) {
+          SelectorFinder.selectors._id.forEach(function(_id) {
             if (attributes._id.indexOf(_id) === -1) {
               console.log('Id "' + chalk.bgYellow.bold(_id) + '" not used');
               countUnusedIds++;
             }
           });
 
-          console.log(chalk.bgBlack(chalk.yellow('Number of scanned html files: ' +result.length)));
+          console.log(chalk.bgBlack(chalk.yellow('Number of scanned html files: ' + result.length)));
           console.log(chalk.bgBlack(chalk.yellow('Number of all css classes: ',SelectorFinder.selectors._class.length)));
           console.log(chalk.bgBlack(chalk.yellow('Number of unused css classes: ', countUnusedClasses)));
 
-          console.log( chalk.bgBlack(chalk.yellow('Number of all id selectors: ', SelectorFinder.selectors._id.length)));
+          console.log(chalk.bgBlack(chalk.yellow('Number of all id selectors: ', SelectorFinder.selectors._id.length)));
           console.log(chalk.bgBlack(chalk.yellow('Number of unused id selectors: ', countUnusedIds)));
 
         }, (reason) => {
@@ -96,7 +98,6 @@ function run(cssPath, htmlDirectory) {
     throw new Error(err);
   });
 }
-
 
 function onLineError(err) {
   console.log('An error occurs while reading your css file. Please check:', err);

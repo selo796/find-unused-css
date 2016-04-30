@@ -7,14 +7,14 @@ class AttributeFinder {
 
     constructor() {
       this.attributes = {
-        _class:[],
-        _id:[],
+        _class: [],
+        _id: [],
       };
     }
 
-    readHTMLFile (filePath) {
-      return new Promise(function (resolve, reject) {
-        fs.readFile(filePath, 'utf8', function (err, data) {
+    readHTMLFile(filePath) {
+      return new Promise(function(resolve, reject) {
+        fs.readFile(filePath, 'utf8', function(err, data) {
           if (err) {
             reject(err);
           }
@@ -24,12 +24,12 @@ class AttributeFinder {
       });
     }
 
-    findAttribute (filePath) {
+    findAttribute(filePath) {
       let parser;
       let _this = this;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         parser = new htmlparser.Parser({
-          onattribute: function (name, value) {
+          onattribute: function(name, value) {
             if (name === 'class') {
               for (let cssClass of value.split(' ')) {
                 if (_this.attributes._class.indexOf(cssClass) === -1) {
@@ -45,11 +45,11 @@ class AttributeFinder {
             }
           },
 
-          onend: function () {
+          onend: function() {
             resolve(_this.attributes);
           },
 
-          onerror: function (err) {
+          onerror: function(err) {
             reject(err);
           },
 
@@ -57,7 +57,7 @@ class AttributeFinder {
           decodeEntities: true,
         });
 
-        _this.readHTMLFile(filePath).then(function (html) {
+        _this.readHTMLFile(filePath).then(function(html) {
           parser.write(html);
           parser.end();
         });

@@ -16,7 +16,7 @@ class SelectorFinder {
     this.filter = new SelectorFilter();
   }
 
-  _findClassSelectors (text) {
+  _findClassSelectors(text) {
     const classRegex = /(\.[^ ):]+)/g;
     const splitter = '.';
     const selector = '_class';
@@ -25,7 +25,6 @@ class SelectorFinder {
       text = text.match(classRegex);
 
       var currentClass;
-
 
       text.forEach((_class)=> {
         currentClass = _class.split(splitter);
@@ -43,7 +42,7 @@ class SelectorFinder {
 
   }
 
-  _findIdSelectors (text) {
+  _findIdSelectors(text) {
     const idRegex = /(\#[^ .):]+)/g;
     const splitter = '#';
     const selector = '_id';
@@ -84,7 +83,7 @@ class SelectorFinder {
     return this.selectors;
   }
 
-  isInComment (text) {
+  isInComment(text) {
     if (text.indexOf('/*') > -1) {
       this.isCommentStarted = true;
       this.isCommentEnded = false;
@@ -99,18 +98,18 @@ class SelectorFinder {
     return this.isCommentStarted;
   }
 
-  pushIntoSelectors (text, selector) {
+  pushIntoSelectors(text, selector) {
     if (!(this.selectors[selector].indexOf(text) > -1)) {
       this.selectors[selector].push(text);
     }
   }
 
-  isColor (text) {
+  isColor(text) {
     const colorRegex = /#[0-9a-f]{6}|#[0-9a-f]{3}/ig;
     return colorRegex.test(text);
   }
 
-  isCssSelectorValid (selector) {
+  isCssSelectorValid(selector) {
     return /^\D.*$/.test(selector) &&
       selector.indexOf('*') === -1 &&
       selector.indexOf(';') === -1 &&
