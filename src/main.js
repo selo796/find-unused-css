@@ -1,5 +1,3 @@
-require('babel-core/register');
-
 var FileFinderModule = require('./modules/fileFinder'),
 SelectorFinderModule = require('./css/selectorFinder'),
 AttributeFinderModele = require('./html/attributeFinder'),

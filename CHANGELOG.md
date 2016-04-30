@@ -1,5 +1,8 @@
 # find-unused-css Changelog
 
+## v0.2.2
+  * Cleaned up dependencies
+
 ## v0.2.1
   * Improved README.md
   * Added command line spinner
