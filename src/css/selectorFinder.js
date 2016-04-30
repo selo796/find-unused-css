@@ -1,5 +1,7 @@
 'use strict';
 
+var SelectorFilter = require('./selectorFilter');
+
 class SelectorFinder {
 
   constructor() {
