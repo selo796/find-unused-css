@@ -29,7 +29,7 @@ function run(cssPath, htmlDirectory) {
   spinner.start();
   var promise = FileFinder.getFiles(htmlDirectory, 'HTML');
   promise.then((result) => {
-    if (result) {
+    if (result && result.length > 0) {
       var cssSelectorsInHtmlFiles;
       var attributes;
       var attributePromises = [];
@@ -55,7 +55,8 @@ function run(cssPath, htmlDirectory) {
           var countUnusedIds = 0;
           SelectorFinder.selectors._class.forEach(function(_class) {
             if (attributes._class.indexOf(_class) === -1) {
-              console.log('Class "' + chalk.bgYellow.bold(_class) + '" not used');
+              console.log(
+                'Class "' + chalk.bgYellow.bold(_class) + '" not used');
               countUnusedClasses++;
             }
           });
@@ -66,13 +67,15 @@ function run(cssPath, htmlDirectory) {
               countUnusedIds++;
             }
           });
+          printIt('Number of scanned html files: ' + result.length);
 
-          console.log(chalk.bgBlack(chalk.yellow('Number of scanned html files: ' + result.length)));
-          console.log(chalk.bgBlack(chalk.yellow('Number of all css classes: ',SelectorFinder.selectors._class.length)));
-          console.log(chalk.bgBlack(chalk.yellow('Number of unused css classes: ', countUnusedClasses)));
+          printIt('Number of all css classes: ' +
+            SelectorFinder.selectors._class.length);
+          printIt('Number of unused css classes: ' + countUnusedClasses);
 
-          console.log(chalk.bgBlack(chalk.yellow('Number of all id selectors: ', SelectorFinder.selectors._id.length)));
-          console.log(chalk.bgBlack(chalk.yellow('Number of unused id selectors: ', countUnusedIds)));
+          printIt('Number of all id selectors: ' +
+            SelectorFinder.selectors._id.length);
+          printIt('Number of unused id selectors: ', countUnusedIds);
 
         }, (reason) => {
           rl.close();
@@ -84,7 +87,7 @@ function run(cssPath, htmlDirectory) {
       });
 
     } else {
-      console.log('No files found...');
+      printIt('No files found...');
     }
 
     rl.close();
@@ -100,6 +103,11 @@ function run(cssPath, htmlDirectory) {
 }
 
 function onLineError(err) {
-  console.log('An error occurs while reading your css file. Please check:', err);
+  console.log(
+    'An error occurs while reading your css file. Please check:', err);
   rl.close();
+}
+
+function printIt(output) {
+  console.log(chalk.bgBlack(chalk.yellow(output)));
 }
