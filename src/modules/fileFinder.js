@@ -33,7 +33,7 @@ class FileFinder {
         return result;
       }
 
-      throw Error('File extension could be found...');
+      throw Error('File extension could not be found...');
     }
 
 }
