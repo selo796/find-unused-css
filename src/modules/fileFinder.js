@@ -13,7 +13,7 @@ class FileFinder {
     }
 
     getFiles(__dirname, fileExtension) {
-      let extension = this.getRegexForFileExtension(fileExtension);
+      let extension = this._getRegexForFileExtension(fileExtension);
       return new Promise(function(resolve, reject) {
         find.file(extension, __dirname, function(files) {
           resolve(files);
@@ -26,7 +26,7 @@ class FileFinder {
       });
     }
 
-    getRegexForFileExtension(fileExtension) {
+    _getRegexForFileExtension(fileExtension) {
       var result =  this.fileExtensionObj[fileExtension];
 
       if (result) {
