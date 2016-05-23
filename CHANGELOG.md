@@ -1,5 +1,9 @@
 # find-unused-css Changelog
 
+## v0.2.4
+  * Improved output messages
+  * Bug fixing at css-comments
+
 ## v0.2.3
   * Cleaned up dev dependencies
 
