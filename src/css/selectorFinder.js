@@ -85,14 +85,16 @@ class SelectorFinder {
 
   isInComment(text) {
     if (text.indexOf('/*') > -1) {
-      this.isCommentStarted = true;
-      this.isCommentEnded = false;
+      this.isCommentStarted = text.indexOf('*/') === -1 ? true : false;
+      this.isCommentEnded = text.indexOf('*/') > -1 ? true : false;
       return true;
     }
 
     if (this.isCommentStarted && text.indexOf('*/') > -1) {
       this.isCommentEnded = true;
       this.isCommentStarted = false;
+      return false;
+
     }
 
     return this.isCommentStarted;

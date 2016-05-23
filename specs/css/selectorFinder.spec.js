@@ -102,6 +102,12 @@ describe('CSS-Selector Finder Testing', ()=> {
       expect(foundCssSelectors._id).toEqual(['myId', 'testID']);
     });
 
+    it('should find "myId-test" ', ()=> {
+      var foundCssSelectors = s.find('#myId-test {');
+      expect(foundCssSelectors._id).toEqual(['myId-test']);
+    });
+
+
     it('should find "[]"', ()=> {
       var t = '   border: 1px solid #c0c0c0;';
       var foundCssSelectors = s.find(t);
