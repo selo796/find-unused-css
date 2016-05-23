@@ -3,11 +3,11 @@
 let Spinner = require('cli-spinner').Spinner;
 let chalk = require('chalk');
 let LineByLineReader = require('line-by-line');
-let FileFinderModule = require('./modules/fileFinder');
-let SelectorFinderModule = require('./css/selectorFinder');
-let AttributeFinderModele = require('./html/attributeFinder');
+let FileFinderModule = require('../modules/fileFinder');
+let SelectorFinderModule = require('../css/selectorFinder');
+let AttributeFinderModele = require('../html/attributeFinder');
 
-class Scanner {
+class CommanLineReader {
 
   constructor(cssPath, htmlDirectory) {
     this.cssPath = cssPath;
@@ -82,21 +82,21 @@ class Scanner {
         });
 
       } else {
-        this._printIt('No files found...');
+        this._printIt('No html files found...');
       }
 
       spinner.stop();
     }, (err) => {
       spinner.stop();
 
-      console.log(err);
+      this._printIt(err);
       throw new Error(err);
     });
   }
 
   _onLineError(err) {
-    console.log(
-      'An error occurs while reading your css file. Please check:', err);
+    console.log(chalk.bgBlack(chalk.yellow(
+      'An error occurs while reading your css file. Please check:' , err)));
   }
 
   _printIt(output) {
@@ -105,4 +105,4 @@ class Scanner {
 
 }
 
-module.exports = Scanner;
+module.exports = CommanLineReader;

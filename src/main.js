@@ -1,6 +1,6 @@
 
 var readline = require('readline');
-var ScannerModule = require('./scanner');
+var CommanLineReader = require('./config/commanLineReader');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 
 rl.question('Path of your css file? ', (cssPath) => {
   rl.question('Path of your html directory? ', (htmlDirectory) => {
-    new ScannerModule(cssPath, htmlDirectory).run();
+    new CommanLineReader(cssPath, htmlDirectory).run();
     rl.close();
   });
 });
