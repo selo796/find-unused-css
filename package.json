@@ -38,7 +38,7 @@
     "line-by-line": "^0.1.4"
   },
   "devDependencies": {
-    "jasmine-es6": "^0.1.8",
+    "jasmine-es6": "^0.1.10",
     "jasmine-node": "^1.14.5"
   },
   "files": [

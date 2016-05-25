@@ -1,5 +1,8 @@
 # find-unused-css Changelog
 
+## v1.0.0
+  * added config file reader (*findUnusedCss.json*)  
+
 ## v0.2.4
   * Improved output messages
   * Bug fixing at css-comments
