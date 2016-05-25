@@ -1,6 +1,6 @@
 # find-unused-css Changelog
 
-## v1.0.0
+## v0.3.0
   * added config file reader (*findUnusedCss.json*)  
 
 ## v0.2.4
