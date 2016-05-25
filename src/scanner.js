@@ -3,27 +3,24 @@
 let Spinner = require('cli-spinner').Spinner;
 let chalk = require('chalk');
 let LineByLineReader = require('line-by-line');
-let FileFinderModule = require('../modules/fileFinder');
-let SelectorFinderModule = require('../css/selectorFinder');
-let AttributeFinderModele = require('../html/attributeFinder');
+let FileFinderModule = require('./modules/fileFinder');
+let SelectorFinderModule = require('./css/selectorFinder');
+let AttributeFinderModele = require('./html/attributeFinder');
 
-class CommanLineReader {
+class Scanner {
 
-  constructor(cssPath, htmlDirectory) {
-    this.cssPath = cssPath;
-    this.htmlDirectory = htmlDirectory;
-
+  constructor(configObj) {
+    this.conf = configObj;
     this._fileFinder = new FileFinderModule();
     this._selectorFinder = new SelectorFinderModule();
     this._attributeFinder = new AttributeFinderModele();
-
   }
 
   run() {
     var spinner = new Spinner('Analyzing .. %s');
     spinner.setSpinnerString('|/-\\');
     spinner.start();
-    var promise = this._fileFinder.getFiles(this.htmlDirectory, 'HTML');
+    var promise = this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML');
     promise.then((result) => {
       if (result && result.length > 0) {
         var cssSelectorsInHtmlFiles;
@@ -34,7 +31,7 @@ class CommanLineReader {
           attributePromises.push(this._attributeFinder.findAttribute(htmlFile));
         }
 
-        var lr = new LineByLineReader(this.cssPath, {
+        var lr = new LineByLineReader(this.conf.cssPath, {
           encoding: 'utf8', skipEmptyLines: false
         });
 
@@ -102,7 +99,6 @@ class CommanLineReader {
   _printIt(output) {
     console.log(chalk.bgBlack(chalk.yellow(output)));
   }
-
 }
 
-module.exports = CommanLineReader;
+module.exports = Scanner;
