@@ -5,24 +5,30 @@ const pathToConfigFile = './findUnusedCss.json';
 
 class FileReader {
 
-  constructor() {
+  constructor(configFile) {
     this._configObj = {};
+    this.configFile = configFile || pathToConfigFile;
   }
 
-  getConfig(configFile) {
-    let config = configFile || pathToConfigFile;
-    try {
-      this._configObj = fs.readFileSync(config, 'utf8');
-    } catch (e) {
+  getConfig() {
+    if (this.isConfigExists()) {
+      this._configObj = fs.readFileSync(this.configFile, 'utf8');
+
+      try {
+        this._configObj = JSON.parse(this._configObj);
+      } catch (e) {
+        throw new Error('An error occurs while parsing the config file.');
+      }
+
+    } else {
       throw new Error('Config file is not found.');
     }
 
-    try {
-      this._configObj = JSON.parse(this._configObj);
-    } catch (e) {
-      throw new Error('An error occurs while parsing the config file.');
-    }
     return this._configObj;
+  }
+
+  isConfigExists() {
+    return fs.existsSync(this.configFile);
   }
 
 }
