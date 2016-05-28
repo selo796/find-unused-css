@@ -2,6 +2,7 @@
 
 let LineByLineReader = require('line-by-line');
 let SelectorFilter = require('./selectorFilter');
+let chalk = require('chalk');
 
 class SelectorFinder {
 
@@ -96,6 +97,9 @@ class SelectorFinder {
       });
 
       lr.on('error', (err) => {
+        console.log(chalk.bgBlack(chalk.yellow(
+            'An error occurs while reading your css file. Please check:'
+        , err)));
         reject(err);
       });
 

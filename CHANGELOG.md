@@ -1,7 +1,8 @@
 # find-unused-css Changelog
 
 ## v0.3.0
-  * added config file reader (*findUnusedCss.json*)  
+  * added config file reader (*findUnusedCss.json*)
+  * enabled multiple css file analyzing
 
 ## v0.2.4
   * Improved output messages

@@ -2,7 +2,6 @@
 
 let Spinner = require('cli-spinner').Spinner;
 let chalk = require('chalk');
-let LineByLineReader = require('line-by-line');
 let FileFinderModule = require('./modules/fileFinder');
 let SelectorFinderModule = require('./css/selectorFinder');
 let AttributeFinderModele = require('./html/attributeFinder');
@@ -28,57 +27,57 @@ class Scanner {
         var cssSelectorsInHtmlFiles;
         var attributes;
         var attributePromises = [];
+        var cssSelectorPromises = [];
+
         for (let htmlFile of result) {
           // add all promises in an array inorder to use Promise.all
           attributePromises.push(this._attributeFinder.findAttribute(htmlFile));
         }
 
-        var lr = new LineByLineReader(this.conf.cssPath, {
-          encoding: 'utf8', skipEmptyLines: false
-        });
+        for (let cssFile of this.conf.cssPath) {
+          // add all promises in an array inorder to use Promise.all
+          cssSelectorPromises.push(this._selectorFinder.run(cssFile));
+        }
 
-        lr.on('error', this._onLineError);
+        Promise.all(cssSelectorPromises).then((cssSelectorList) => {
+            Promise.all(attributePromises).then((value) => {
+              attributes = value [0];
+              var countUnusedClasses = 0;
+              var countUnusedIds = 0;
+              this._selectorFinder.selectors._class.forEach(function(_class) {
+                if (attributes._class.indexOf(_class) === -1) {
+                  console.log(
+                    'Class "' + chalk.bgYellow.bold(_class) + '" not used');
+                  countUnusedClasses++;
+                }
+              });
 
-        lr.on('line', (line) => {
-          this._selectorFinder.find(line);
-        });
+              this._selectorFinder.selectors._id.forEach(function(_id) {
+                if (attributes._id.indexOf(_id) === -1) {
+                  console.log('Id "' + chalk.bgYellow.bold(_id) + '" not used');
+                  countUnusedIds++;
+                }
+              });
+              this._printIt('Number of scanned html files: ' + result.length);
 
-        lr.on('end', () => {
-          Promise.all(attributePromises).then((value) => {
-            attributes = value [0];
-            var countUnusedClasses = 0;
-            var countUnusedIds = 0;
-            this._selectorFinder.selectors._class.forEach(function(_class) {
-              if (attributes._class.indexOf(_class) === -1) {
-                console.log(
-                  'Class "' + chalk.bgYellow.bold(_class) + '" not used');
-                countUnusedClasses++;
-              }
+              this._printIt('Number of all css classes: ' +
+                this._selectorFinder.selectors._class.length);
+              this._printIt('Number of unused css classes: ' +
+                countUnusedClasses);
+
+              this._printIt('Number of all id selectors: ' +
+                this._selectorFinder.selectors._id.length);
+              this._printIt('Number of unused id selectors: ' + countUnusedIds);
+
+            }, (reason) => {
+              spinner.stop();
+              throw new Error(reason);
+
             });
-
-            this._selectorFinder.selectors._id.forEach(function(_id) {
-              if (attributes._id.indexOf(_id) === -1) {
-                console.log('Id "' + chalk.bgYellow.bold(_id) + '" not used');
-                countUnusedIds++;
-              }
-            });
-            this._printIt('Number of scanned html files: ' + result.length);
-
-            this._printIt('Number of all css classes: ' +
-              this._selectorFinder.selectors._class.length);
-            this._printIt('Number of unused css classes: ' +
-              countUnusedClasses);
-
-            this._printIt('Number of all id selectors: ' +
-              this._selectorFinder.selectors._id.length);
-            this._printIt('Number of unused id selectors: ' + countUnusedIds);
-
           }, (reason) => {
             spinner.stop();
             throw new Error(reason);
-
           });
-        });
 
       } else {
         this._printIt('No html files found...');
@@ -91,12 +90,6 @@ class Scanner {
       this._printIt(err);
       throw new Error(err);
     });
-  }
-
-  _onLineError(err) {
-    spinner.stop();
-    console.log(chalk.bgBlack(chalk.yellow(
-      'An error occurs while reading your css file. Please check:' , err)));
   }
 
   _printIt(output) {
