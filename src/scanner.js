@@ -7,6 +7,8 @@ let FileFinderModule = require('./modules/fileFinder');
 let SelectorFinderModule = require('./css/selectorFinder');
 let AttributeFinderModele = require('./html/attributeFinder');
 
+let spinner = new Spinner('Analyzing .. %s');
+
 class Scanner {
 
   constructor(configObj) {
@@ -17,7 +19,7 @@ class Scanner {
   }
 
   run() {
-    var spinner = new Spinner('Analyzing .. %s');
+
     spinner.setSpinnerString('|/-\\');
     spinner.start();
     var promise = this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML');
@@ -92,6 +94,7 @@ class Scanner {
   }
 
   _onLineError(err) {
+    spinner.stop();
     console.log(chalk.bgBlack(chalk.yellow(
       'An error occurs while reading your css file. Please check:' , err)));
   }

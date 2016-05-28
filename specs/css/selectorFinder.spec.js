@@ -157,4 +157,47 @@ describe('CSS-Selector Finder Testing', ()=> {
       expect(foundCssSelectors._class).toEqual([]);
     });
   });
+
+  describe ('Find selectors in multiple css files', () => {
+    var s;
+
+    beforeEach(()=> {
+      s =  new SelectorFinder();
+    });
+
+    it('should find selectors in single css file',  (done)=> {
+      var cssFiles = './specs/css/testCssFiles/main.css';
+
+      var promise = s.run(cssFiles);
+      promise.then((result) => {
+          expect(s.selectors._id).toEqual([ 'myTestID' ]);
+          expect(s.selectors._class).toEqual( ['text-transform--none', 'myTestClass' ]);
+          done();
+      }, (err) => {
+          expect(err).not.toBeDefined();
+          done();
+      });
+    });
+
+    it('should find selectors in multiple css file',  (done)=> {
+      var cssFiles1 = './specs/css/testCssFiles/main.css';
+      var cssFiles2 = './specs/css/testCssFiles/id.css';
+
+      var promise1 = s.run(cssFiles1);
+      var promise2 = s.run(cssFiles2);
+      Promise.all([promise1, promise2]).then((result) => {
+          expect(s.selectors._id).toEqual([ 'myTestID1', 'myTestID' ]);
+          expect(s.selectors._class).toEqual( ['text-transform--none', 'myClass' , 'myTestClass' ]);
+          done();
+      }, (err) => {
+          expect(err).not.toBeDefined();
+          done();
+      });
+    });
+
+    it('should throw an error with "css file not found."', ()=> {
+
+    });
+
+  });
 });

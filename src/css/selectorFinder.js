@@ -1,6 +1,7 @@
 'use strict';
 
-var SelectorFilter = require('./selectorFilter');
+let LineByLineReader = require('line-by-line');
+let SelectorFilter = require('./selectorFilter');
 
 class SelectorFinder {
 
@@ -81,6 +82,27 @@ class SelectorFinder {
     this._findIdSelectors(text);
 
     return this.selectors;
+  }
+
+  run(cssFile) {
+    let lr = new LineByLineReader(cssFile, {
+      encoding: 'utf8', skipEmptyLines: false
+    });
+
+    return new Promise((resolve, reject) => {
+
+      lr.on('line', (line) => {
+        this.find(line);
+      });
+
+      lr.on('error', (err) => {
+        reject(err);
+      });
+
+      lr.on('end', () => {
+        resolve(cssFile + 'is finished');
+      });
+    });
   }
 
   isInComment(text) {
