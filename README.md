@@ -3,22 +3,34 @@
 >A npm tool to find unused css selectors in your project.
 
 
-## Getting Started
+## Installation
 
-
-Install this package from npm:
-
-```
+```shell
 npm install find-unused-css -g
 ```
 
+## Usage
+
 Once the module has been installed, you can run it with this command globally:
 
-```
+```shell
 find-unused-css
 ```
 
-After running this command you will get two questions from command line
+### From config file:
+Create a config file namely "*findUnusedCss.json*" with following options:
+
+```js
+{
+   // list of css files for analyzing
+  "cssFiles": ["dist/css/main.css"],
+  "htmlDirectory": "dist/html"
+}
+```
+
+### From the command line:
+
+After running *find-unused-css* you will get two questions from command line
 
   1. **Path of your css file:**
 
@@ -44,9 +56,8 @@ Issues can be reported on the [issue tracker](https://github.com/selo796/find-un
 ## What is next?
 
  - Improving the output instead of command line
- - Reading configuration from a json file instead of command line with
-    - Support for multiple css files
-    - Ignore HTML files
+ - Enable ignoring HTML files
+ - Read config file from command line
  - Support for attribute selectors
  - Support for AngularJS
 
