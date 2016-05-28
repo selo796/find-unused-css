@@ -97,9 +97,6 @@ class SelectorFinder {
       });
 
       lr.on('error', (err) => {
-        console.log(chalk.bgBlack(chalk.yellow(
-            'An error occurs while reading your css file. Please check:'
-        , err)));
         reject(err);
       });
 

@@ -34,7 +34,7 @@ class Scanner {
           attributePromises.push(this._attributeFinder.findAttribute(htmlFile));
         }
 
-        for (let cssFile of this.conf.cssPath) {
+        for (let cssFile of this.conf.cssFiles) {
           // add all promises in an array inorder to use Promise.all
           cssSelectorPromises.push(this._selectorFinder.run(cssFile));
         }
@@ -76,6 +76,9 @@ class Scanner {
             });
           }, (reason) => {
             spinner.stop();
+            this._printIt(
+              'An error occurs while reading your css file. Please check:' +
+              reason);
             throw new Error(reason);
           });
 

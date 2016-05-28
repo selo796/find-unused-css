@@ -20,7 +20,7 @@ function readConfigFromCommandLine() {
     rl.question('Path of your html directory? ', (htmlDirectory) => {
       var confObj = {
         'htmlDirectory': htmlDirectory,
-        'cssPath': [cssPath]
+        'cssFiles': [cssPath]
       };
       new Scanner(confObj).run();
       rl.close();
