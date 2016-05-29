@@ -29,7 +29,8 @@
   "scripts": {
     "start": "node src/main.js",
     "test": "./node_modules/.bin/jasmine-node specs/ --color ./",
-    "unit": "./node_modules/.bin/jasmine-node specs/ --color --autotest --watch ./"
+    "unit": "./node_modules/.bin/jasmine-node specs/ --color --autotest --watch ./",
+    "coverage": "./node_modules/.bin/istanbul cover jasmine-node --captureExceptions specs/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
     "chalk": "^1.1.3",
@@ -39,6 +40,8 @@
     "line-by-line": "^0.1.4"
   },
   "devDependencies": {
+    "coveralls": "^2.11.9",
+    "istanbul": "^0.4.3",
     "jasmine-es6": "^0.1.10",
     "jasmine-node": "^1.14.5"
   },
