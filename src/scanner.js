@@ -18,9 +18,10 @@ class Scanner {
   }
 
   run() {
-
+    this._checkConfig();
     spinner.setSpinnerString('|/-\\');
     spinner.start();
+
     var promise = this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML');
     promise.then((result) => {
       if (result && result.length > 0) {
@@ -95,6 +96,16 @@ class Scanner {
     });
   }
 
+  _checkConfig() {
+    if (!this.conf) {
+      throw new Error('Config file is not found.');
+    } else if (!this.conf.htmlDirectory) {
+      throw new Error('Please check your config file. No htmlDirectory is defined.');
+    } else if (!this.conf.cssFiles) {
+      throw new Error('Please check your config file. No cssFiles is defined.');
+    }
+    return true;
+  }
   _printIt(output) {
     console.log(chalk.bgBlack(chalk.yellow(output)));
   }
