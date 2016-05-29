@@ -28,7 +28,8 @@
   },
   "scripts": {
     "start": "node src/main.js",
-    "test": "./node_modules/.bin/jasmine-node specs/ --color --autotest --watch ./"
+    "test": "./node_modules/.bin/jasmine-node specs/ --color ./",
+    "unit": "./node_modules/.bin/jasmine-node specs/ --color --autotest --watch ./"
   },
   "dependencies": {
     "chalk": "^1.1.3",
