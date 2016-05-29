@@ -1,4 +1,3 @@
-
 var readline = require('readline');
 var ConfigFileReader = require('./config/fileReader');
 var Scanner = require('./scanner');

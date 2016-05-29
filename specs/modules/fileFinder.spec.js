@@ -16,4 +16,17 @@ describe('File Finder Testing', function() {
       done();
     });
   });
+
+  it('should reject when directory not found', function(done) {
+    var s =  new FileFinder();
+
+    var promise = s.getFiles('./specs/modules/unknown', 'HTML');
+    promise.then((result) => {
+      expect(result).toEqual('No Result!');
+      done();
+    }, (err) => {
+      expect(err).toEqual('Directory: "./specs/modules/unknown" not found!');
+      done();
+    });
+  });
 });

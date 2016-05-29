@@ -187,7 +187,7 @@ describe('CSS-Selector Finder Testing', ()=> {
       var promise2 = s.run(cssFiles2);
       Promise.all([promise1, promise2]).then((result) => {
           expect(s.selectors._id).toEqual([ 'myTestID1', 'myTestID' ]);
-          expect(s.selectors._class).toEqual( ['text-transform--none', 'myClass' , 'myTestClass' ]);
+          expect(s.selectors._class.length).toEqual(3);
           done();
       }, (err) => {
           expect(err).not.toBeDefined();
