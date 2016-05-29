@@ -1,4 +1,4 @@
-# find-unused-css
+# find-unused-css [![Build Status](https://travis-ci.org/selo796/find-unused-css.svg?branch=master)](https://travis-ci.org/selo796/find-unused-css)
 
 >A npm tool to find unused css selectors in your project.
 
