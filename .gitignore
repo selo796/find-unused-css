@@ -8,3 +8,4 @@ build/
 node_modules
 dist
 npm-debug.log
+coverage
