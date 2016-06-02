@@ -4,7 +4,7 @@ instrumentation:
     extensions:
         - .js
     default-excludes: true
-    excludes: ["specs/**", "src/main.js"]
+    excludes: ["specs/**", "src/main.js", "src/reports/commandLineReport.js"]
     embed-source: false
     variable: __coverage__
     compact: true
