@@ -10,7 +10,7 @@ describe('Config File Reader Testing', ()=> {
     let configFile = './specs/config/testFiles/notFound.json';
     s =  new FileReader(configFile);
 
-    expect(function() {s.getConfig();})
+    expect(function() { s.getConfig();})
       .toThrow(new Error('Config file is not found.'));
 
   });

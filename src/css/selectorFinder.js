@@ -87,7 +87,7 @@ class SelectorFinder {
 
   run(cssFile) {
     let lr = new LineByLineReader(cssFile, {
-      encoding: 'utf8', skipEmptyLines: false
+      encoding: 'utf8', skipEmptyLines: false,
     });
 
     return new Promise((resolve, reject) => {
