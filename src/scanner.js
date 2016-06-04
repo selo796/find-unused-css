@@ -27,7 +27,7 @@ class Scanner {
       }
       spinner.setSpinnerString('|/-\\');
       spinner.start();
-      this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML').then((htmlFiles) => {
+      this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML', this.conf.excludes).then((htmlFiles) => {
         if (htmlFiles && htmlFiles.length > 0) {
           var cssSelectorsInHtmlFiles;
           var attributes;

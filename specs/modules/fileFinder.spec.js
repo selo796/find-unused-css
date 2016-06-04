@@ -29,4 +29,43 @@ describe('File Finder Testing', function() {
       done();
     });
   });
+
+  it('should "not" filter ignored dirs', function(done) {
+    var s =  new FileFinder();
+
+    var promise = s.getFiles('./specs/modules/testHTMLFolder', 'HTML', []);
+    promise.then((result) => {
+      expect(result.length).toBe(6);
+      done();
+    }, (err) => {
+      expect(err).toEqual('No Error!');
+      done();
+    });
+  });
+
+  it('should filter ignored dirs', function(done) {
+    var s =  new FileFinder();
+
+    var promise = s.getFiles('./', 'HTML', ['node_modules', 'coverage']);
+    promise.then((result) => {
+      expect(result.length).toBe(8);
+      done();
+    }, (err) => {
+      expect(err).toEqual('No Error!');
+      done();
+    });
+  });
+
+  it('should filter ignored dirs', function(done) {
+    var s =  new FileFinder();
+
+    var promise = s.getFiles('./', 'HTML', ['./node_modules', './coverage']);
+    promise.then((result) => {
+      expect(result.length).toBe(8);
+      done();
+    }, (err) => {
+      expect(err).toEqual('No Error!');
+      done();
+    });
+  });
 });

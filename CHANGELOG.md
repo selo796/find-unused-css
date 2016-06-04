@@ -1,5 +1,9 @@
 # find-unused-css Changelog
 
+## v0.3.1
+  * enabled to exclude html folders in config
+  * Improved README.md
+
 ## v0.3.0
   * added config file reader (*findUnusedCss.json*)
   * enabled multiple css file analyzing
