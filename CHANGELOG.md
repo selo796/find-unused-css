@@ -1,6 +1,9 @@
 # find-unused-css Changelog
 
-## v0.3.1
+## v0.4.1
+  * Improved README.md
+
+## v0.4.0
   * enabled to exclude html folders in config
   * Improved README.md
 

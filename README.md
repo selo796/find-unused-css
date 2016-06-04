@@ -27,7 +27,7 @@ Create a config file namely "*findUnusedCss.json*" with following options:
   "cssFiles": ["./dist/css/main.css"],
   // path of html directory for analyzing
   "htmlDirectory": "./dist/html",
-  // list of html folders, which will are excluded during analyzing
+  // list of html folders, which are excluded during analyzing
   "excludes": ["./node_modules"],
 }
 ```
