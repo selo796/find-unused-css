@@ -1,3 +1,5 @@
+/* global process */
+'use strict';
 var readline = require('readline');
 var ConfigFileReader = require('./config/fileReader');
 var Scanner = require('./scanner');
@@ -8,7 +10,7 @@ if (fileReader.isConfigExists()) {
   var CommandLineReporter;
   report(fileReader.getConfig());
 
-}else {
+} else {
   readConfigFromCommandLine();
 }
 

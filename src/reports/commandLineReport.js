@@ -1,3 +1,4 @@
+/* global console */
 'use strict';
 let chalk = require('chalk');
 

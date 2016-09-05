@@ -1,4 +1,4 @@
-/* global require, describe, expect, it */
+
 'use strict';
 
 var FileReader = require('../../src/config/fileReader');

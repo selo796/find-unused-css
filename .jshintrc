@@ -1,0 +1,12 @@
+{   
+    "esnext": true,
+    "globalstrict": true,
+    "globals": {
+        "module": true,
+        "require": true,
+        "describe": true,
+        "expect":  true,
+        "it": true,
+        "beforeEach": true
+    }
+}
