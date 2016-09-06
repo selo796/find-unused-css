@@ -1,5 +1,8 @@
 # find-unused-css Changelog
 
+## v0.5.0
+  * added globs in config for html and css file directories
+
 ## v0.4.1
   * Improved README.md
 

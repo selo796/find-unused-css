@@ -7,7 +7,7 @@ describe('File Finder Testing', function() {
   it('should find all html files in testHTMLFolder', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./specs/modules/testHTMLFolder', 'HTML');
+    var promise = s.getFiles('./specs/modules/testHTMLFolder/**/*.html', 'HTML');
     promise.then((result) => {
       expect(result.length).toBe(6);
       done();
@@ -20,12 +20,12 @@ describe('File Finder Testing', function() {
   it('should reject when directory not found', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./specs/modules/unknown', 'HTML');
+    var promise = s.getFiles('./specs/modules/unknown/*.html', 'HTML');
     promise.then((result) => {
-      expect(result).toEqual('No Result!');
+       expect(result).toEqual('No Result!');
       done();
     }, (err) => {
-      expect(err).toEqual('Directory: "./specs/modules/unknown" not found!');
+      expect(err).toEqual('Looking for file extension:HTML, but no files found in: "./specs/modules/unknown/*.html"', 'HTML');
       done();
     });
   });
@@ -33,7 +33,7 @@ describe('File Finder Testing', function() {
   it('should "not" filter ignored dirs', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./specs/modules/testHTMLFolder', 'HTML', []);
+    var promise = s.getFiles('./specs/modules/testHTMLFolder/**/*.html', 'HTML', []);
     promise.then((result) => {
       expect(result.length).toBe(6);
       done();
@@ -46,7 +46,7 @@ describe('File Finder Testing', function() {
   it('should filter ignored dirs', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./', 'HTML', ['node_modules', 'coverage']);
+    var promise = s.getFiles('./**/*.html', 'HTML', ['node_modules', 'coverage']);
     promise.then((result) => {
       expect(result.length).toBe(8);
       done();
@@ -56,15 +56,15 @@ describe('File Finder Testing', function() {
     });
   });
 
-  it('should filter ignored dirs', function(done) {
+  it('should reject when searching for html in js files', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./', 'HTML', ['./node_modules', './coverage']);
+    var promise = s.getFiles('./**/*.js', 'HTML');
     promise.then((result) => {
       expect(result.length).toBe(8);
       done();
     }, (err) => {
-      expect(err).toEqual('No Error!');
+      expect(err).toEqual('Looking for file extension:HTML, but no files found in: "./**/*.js"');
       done();
     });
   });

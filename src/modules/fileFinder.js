@@ -1,7 +1,7 @@
 'use strict';
 
-var find = require('find');
 var path = require('path');
+var glob = require('glob');
 
 class FileFinder {
 
@@ -13,45 +13,45 @@ class FileFinder {
     };
   }
 
-  _filterDirs (files, ignoredDirs) {
+  _filterDirs (files, extension, ignoredDirs) {
     let result = [];
     let isNotIgnored = true;
     return new Promise((resolve, reject) => {
-      if (ignoredDirs && ignoredDirs.length > 0) {
-        for (let file of files) {
-          isNotIgnored = true;
-          for (let ignoredDir of ignoredDirs) {
+      for (let file of files) {
+        if(!extension.test(file)) {
+          continue;
+        }
+        isNotIgnored = true;
+        if(ignoredDirs) {
+            for (let ignoredDir of ignoredDirs) {
             ignoredDir = path.normalize(ignoredDir);
             isNotIgnored =
               isNotIgnored && path.dirname(file).indexOf(ignoredDir) === -1;
           }
-          /* istanbul ignore next */
-          if (isNotIgnored) {
-            result.push(file);
-          }
         }
-        resolve(result);
-      } else {
-        resolve(files);
+        /* istanbul ignore next */
+        if (isNotIgnored) {
+          result.push(file);
+        }
       }
-
+      resolve(result);
     });
 
   }
 
-
-  getFiles(__dirname, fileExtension, ignoredDirs) {
+  getFiles(__glob, fileExtension, ignoredDirs) {
     let extension = this._getRegexForFileExtension(fileExtension);
     return new Promise((resolve, reject) => {
-      find.file(extension, __dirname, (files) => {
-        this._filterDirs(files, ignoredDirs).then((result)=> {
+      glob(__glob, {nonull:false},  (err, matches) => {
+        if (err) {
+          reject('An error occurs while searching for files in ' + __glob, err);
+        }
+        this._filterDirs(matches, extension, ignoredDirs).then((result)=> {
+            if(result.length === 0 || (__glob && matches[0] === __glob)) {
+              reject('Looking for file extension:'+ fileExtension+', but no files found in: "' +  __glob + '"');
+            }
             resolve(result);
           });
-      })
-      .error(function(err) {
-        if (err) {
-          reject('Directory: "' +  __dirname + '" not found!', err);
-        }
       });
     });
   }
@@ -65,7 +65,6 @@ class FileFinder {
 
     throw Error('File extension could not be found...');
   }
-
 }
 
 module.exports = FileFinder;

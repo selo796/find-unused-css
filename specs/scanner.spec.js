@@ -40,16 +40,16 @@ describe('Scanner Testing', function() {
       });
     });
 
-    it('should return an empty object if no html files found', (done)=> {
+    it('should reject if no html files found', (done)=> {
       var s =  new Scanner(
         {
           htmlDirectory: './src',
           cssFiles: ['./specs/css/testCssFiles/id.css'],});
       s.run().then((result)=> {
-        expect(result).toEqual('No html files found...');
+        expect(result).not.toBeDefined();
         done();
       }, (err)=> {
-        expect(err).not.toBeDefined();
+        expect(err).toEqual('Looking for file extension:HTML, but no files found in: "./src"');
         done();
       });
     });
@@ -63,7 +63,7 @@ describe('Scanner Testing', function() {
         expect(result).not.toBeDefined({});
         done();
       }, (err)=> {
-        expect(err).toEqual('Directory: "./src/unknown" not found!');
+        expect(err).toEqual('Looking for file extension:HTML, but no files found in: "./src/unknown"');
         done();
       });
     });
@@ -71,7 +71,7 @@ describe('Scanner Testing', function() {
     it('should return all unused id and class selectors', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './specs/html/testAttributeFinderInHtml',
+          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*html',
           cssFiles: ['./specs/css/testCssFiles/id.css'],});
       s.run().then((result)=> {
         expect(result).toEqual(
