@@ -71,7 +71,7 @@ describe('Scanner Testing', function() {
     it('should return all unused id and class selectors', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*html',
+          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
           cssFiles: ['./specs/css/testCssFiles/id.css'],});
       s.run().then((result)=> {
         expect(result).toEqual(
@@ -84,6 +84,61 @@ describe('Scanner Testing', function() {
         done();
       }, (err)=> {
         expect(err).not.toBeDefined({});
+        done();
+      });
+    });
+
+    it('should return all unused id and class selectors by using glob', (done)=> {
+      var s =  new Scanner(
+        {
+          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
+          cssFiles: ['./specs/css/**/*.css'],});
+      s.run().then((result)=> {
+        expect(result).toEqual(
+          { totalNumberOfHtmlFiles: 2,
+            totalNumberOfClassSelectors: 3,
+            totalNumberOfIdSelectors: 2,
+            numberOfUnusedIds: 2,
+            unusedClasses: [ 'text-transform--none', 'myClass', 'myTestClass' ],
+            unusedIds: [ 'myTestID1', 'myTestID' ], });
+        done();
+      }, (err)=> {
+        expect(err).not.toBeDefined({});
+        done();
+      });
+    });
+
+    it('should return all unused id and class selectors by using glob', (done)=> {
+      var s =  new Scanner(
+        {
+          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
+          cssFiles: ['./specs/css/**/id.css', './specs/css/**/main.css'],});
+      s.run().then((result)=> {
+        expect(result).toEqual(
+          { totalNumberOfHtmlFiles: 2,
+            totalNumberOfClassSelectors: 3,
+            totalNumberOfIdSelectors: 2,
+            numberOfUnusedIds: 2,
+            unusedClasses: [ 'text-transform--none', 'myClass', 'myTestClass' ],
+            unusedIds: [ 'myTestID1', 'myTestID' ], });
+        done();
+      }, (err)=> {
+        expect(err).not.toBeDefined({});
+        done();
+      });
+    });
+
+    it('should reject by using also wrong glob', (done)=> {
+      var s =  new Scanner(
+        {
+          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
+          cssFiles: ['./specs/css/**/*.css', './specs/css/**/*.HTML'],});
+      s.run().then((result)=> {
+        expect(result).not.toBeDefined({});
+        
+        done();
+      }, (err)=> {
+        expect(err).toBeDefined({});
         done();
       });
     });

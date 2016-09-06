@@ -47,10 +47,12 @@ class FileFinder {
           reject('An error occurs while searching for files in ' + __glob, err);
         }
         this._filterDirs(matches, extension, ignoredDirs).then((result)=> {
-            if(result.length === 0 || (__glob && matches[0] === __glob)) {
+            if(result.length === 0 || (__glob && matches[0] === __glob && !extension.test(matches[0]))) {
               reject('Looking for file extension:'+ fileExtension+', but no files found in: "' +  __glob + '"');
             }
             resolve(result);
+          }, (err)=> {
+            reject('An error occurs while searching for files in ' + __glob, err);
           });
       });
     });

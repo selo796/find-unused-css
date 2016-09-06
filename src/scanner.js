@@ -32,6 +32,7 @@ class Scanner {
           var cssSelectorsInHtmlFiles;
           var attributes;
           var attributePromises = [];
+          var cssFilePromises = [];
           var cssSelectorPromises = [];
           var listOfUnusedClasses = [];
           var listOfUnusedIds = [];
@@ -40,12 +41,19 @@ class Scanner {
             attributePromises.push(this._attributeFinder.findAttribute(htmlFile));
           }
 
-          for (let cssFile of this.conf.cssFiles) {
-            // Add all promises in an array inorder to use Promise.all
-            cssSelectorPromises.push(this._selectorFinder.run(cssFile));
+          for (let cssConfigFile of this.conf.cssFiles) {
+            cssFilePromises.push(this._fileFinder.getFiles(cssConfigFile, 'CSS'));
           }
+          
+          Promise.all(cssFilePromises).then((cssFilesMultipDimensionalArray) => {
+              for (let cssFiles of cssFilesMultipDimensionalArray) {
+                for (let cssFile of cssFiles) {
+                  // Add all promises in an array inorder to use Promise.all
+                  cssSelectorPromises.push(this._selectorFinder.run(cssFile));
+                }
+              }  
 
-          Promise.all(cssSelectorPromises).then((cssSelectorList) => {
+              Promise.all(cssSelectorPromises).then((cssSelectorList) => {
               Promise.all(attributePromises).then((value) => {
                 attributes = value [0];
                 var countUnusedIds = 0;
@@ -87,6 +95,11 @@ class Scanner {
               resolve('An error occurs while reading your css file. Please check:' +
               reason);
             });
+          },(err) => {
+              spinner.stop();
+              reject(err);
+          });
+          
 
         } else {
           spinner.stop();
