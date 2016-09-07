@@ -64,6 +64,6 @@ Issues can be reported on the [issue tracker](https://github.com/selo796/find-un
  - Improving the output instead of command line
  - Read config file from command line
  - Support for attribute selectors
- - Support for AngularJS
+ - Support for AngularJS and React
 
 I am very happy for every feedback...

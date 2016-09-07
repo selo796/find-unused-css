@@ -16,6 +16,35 @@ class Scanner {
     this._attributeFinder = new AttributeFinderModele();
   }
 
+  _getAttributes(htmlFiles) {
+    let attributePromises = [];
+    for (let htmlFile of htmlFiles) {
+      // Add all promises in an array inorder to use Promise.all
+      attributePromises.push(this._attributeFinder.findAttribute(htmlFile));
+    }
+    return attributePromises;
+  }
+
+  _getCssFiles() {
+    let cssFilePromises = [];
+    // find all css files from glob
+    for (let cssConfigFile of this.conf.cssFiles) {
+      cssFilePromises.push(this._fileFinder.getFiles(cssConfigFile, 'CSS'));
+    }
+    return cssFilePromises;
+  }
+
+  _getCssSelectors(cssFilesMultipDimensionalArray) {
+    let cssSelectorPromises = [];
+    for (let cssFiles of cssFilesMultipDimensionalArray) {
+        for (let cssFile of cssFiles) {
+          // Add all promises in an array inorder to use Promise.all
+          cssSelectorPromises.push(this._selectorFinder.run(cssFile));
+        }
+    }
+    return cssSelectorPromises; 
+  }
+
   run() {
     let result = {};
     return new Promise((resolve, reject) => {
@@ -27,80 +56,58 @@ class Scanner {
       }
       spinner.setSpinnerString('|/-\\');
       spinner.start();
-      this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML',  this.conf.excludes).then((htmlFiles) => {
+      // find all html files
+      let htmlFilePromise = this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML',  this.conf.excludes);
+      htmlFilePromise.then((htmlFiles) => {
         if (htmlFiles && htmlFiles.length > 0) {
           var cssSelectorsInHtmlFiles;
           var attributes;
-          var attributePromises = [];
-          var cssFilePromises = [];
           var cssSelectorPromises = [];
           var listOfUnusedClasses = [];
           var listOfUnusedIds = [];
-          for (let htmlFile of htmlFiles) {
-            // Add all promises in an array inorder to use Promise.all
-            attributePromises.push(this._attributeFinder.findAttribute(htmlFile));
-          }
-
-          for (let cssConfigFile of this.conf.cssFiles) {
-            cssFilePromises.push(this._fileFinder.getFiles(cssConfigFile, 'CSS'));
-          }
           
-          Promise.all(cssFilePromises).then((cssFilesMultipDimensionalArray) => {
-              for (let cssFiles of cssFilesMultipDimensionalArray) {
-                for (let cssFile of cssFiles) {
-                  // Add all promises in an array inorder to use Promise.all
-                  cssSelectorPromises.push(this._selectorFinder.run(cssFile));
-                }
-              }  
+          Promise.all(this._getCssFiles()).then((cssFilesMultipDimensionalArray) => {
+              Promise.all(this._getCssSelectors(cssFilesMultipDimensionalArray)).then((cssSelectorList) => {
+                Promise.all(this._getAttributes(htmlFiles)).then((value) => {
+                  attributes = value [0];
+                  var countUnusedIds = 0;
+                  this._selectorFinder.selectors._class.forEach(function(_class) {
+                    /* istanbul ignore else */
+                    if (attributes._class.indexOf(_class) === -1) {
+                      listOfUnusedClasses.push(_class);
+                    }
+                  });
 
-              Promise.all(cssSelectorPromises).then((cssSelectorList) => {
-              Promise.all(attributePromises).then((value) => {
-                attributes = value [0];
-                var countUnusedIds = 0;
-                this._selectorFinder.selectors._class.forEach(function(_class) {
-                  /* istanbul ignore else */
-                  if (attributes._class.indexOf(_class) === -1) {
-                    listOfUnusedClasses.push(_class);
-                  }
+                  this._selectorFinder.selectors._id.forEach(function(_id) {
+                    /* istanbul ignore else */
+                    if (attributes._id.indexOf(_id) === -1) {
+                      listOfUnusedIds.push(_id);
+                      countUnusedIds++;
+                    }
+                  });
+
+                  spinner.stop();
+
+                  resolve({
+                    totalNumberOfHtmlFiles: htmlFiles.length,
+                    totalNumberOfClassSelectors: this._selectorFinder.selectors._class.length,
+                    totalNumberOfIdSelectors: this._selectorFinder.selectors._id.length,
+                    numberOfUnusedIds: countUnusedIds,
+                    unusedClasses: listOfUnusedClasses,
+                    unusedIds: listOfUnusedIds,
+                  });
+                }, (reason) => {
+                  spinner.stop();
+                  resolve(result);
                 });
-
-                this._selectorFinder.selectors._id.forEach(function(_id) {
-                  /* istanbul ignore else */
-                  if (attributes._id.indexOf(_id) === -1) {
-                    listOfUnusedIds.push(_id);
-                    countUnusedIds++;
-                  }
-                });
-
-                spinner.stop();
-
-                resolve({
-                  totalNumberOfHtmlFiles: htmlFiles.length,
-                  totalNumberOfClassSelectors: this._selectorFinder.selectors._class.length,
-                  totalNumberOfIdSelectors: this._selectorFinder.selectors._id.length,
-                  numberOfUnusedIds: countUnusedIds,
-                  unusedClasses: listOfUnusedClasses,
-                  unusedIds: listOfUnusedIds,
-                });
-                resolve(result);
-
-              }, (reason) => {
-                spinner.stop();
-                resolve(result);
-
-              });
             }, (reason) => {
               spinner.stop();
-
-              resolve('An error occurs while reading your css file. Please check:' +
-              reason);
+              resolve('An error occurs while reading your css file. Please check:' + reason);
             });
           },(err) => {
               spinner.stop();
               reject(err);
           });
-          
-
         } else {
           spinner.stop();
           resolve('No html files found...');

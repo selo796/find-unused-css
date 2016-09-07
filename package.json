@@ -42,7 +42,7 @@
   "devDependencies": {
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
-    "jasmine-es6": "^0.1.10",
+    "jasmine-es6": "^0.3.0",
     "jasmine-node": "^1.14.5"
   },
   "files": [
