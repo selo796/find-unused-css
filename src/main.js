@@ -7,9 +7,7 @@ var fileReader = new ConfigFileReader();
 var CommandLineReporterModule = require('./reports/commandLineReport');
 
 if (fileReader.isConfigExists()) {
-  var CommandLineReporter;
   report(fileReader.getConfig());
-
 } else {
   readConfigFromCommandLine();
 }

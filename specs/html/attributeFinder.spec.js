@@ -25,11 +25,11 @@ describe('Attribute Finder Testing', function() {
 				'test2', 'btn-big']);
         done();
       },function(err) {
-        console.log('classes err: ', err);
+        expect(err).not.toBeDefined();
         done();
       });
     },(err)=> {
-      console.log('classes err: ', err);
+      expect(err).not.toBeDefined();
       done();
     });
   });
@@ -45,12 +45,12 @@ describe('Attribute Finder Testing', function() {
 				.toEqual(['id1', 'id2', 'id3', 'id4', 'id5', 'id6']);
         done();
       }, function(err) {
-        console.log('classes err: ', err);
+        expect(err).not.toBeDefined();
         done();
       });
 
     },function(err) {
-      console.log('classes err: ', err);
+      expect(err).not.toBeDefined();
       done();
     });
 
