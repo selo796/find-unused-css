@@ -17,7 +17,7 @@ describe('Scanner Testing', function() {
     });
 
     it('should return an error if htmlDirectory is not defined', (done)=> {
-      var s =  new Scanner({htmlWrong: './'});
+      var s =  new Scanner({htmlWrong: ['./']});
       s.run().then((result)=> {
         expect(result).not.toBeDefined({});
         done();
@@ -29,7 +29,7 @@ describe('Scanner Testing', function() {
     });
 
     it('should return an error if cssFiles in config file not exists', (done)=> {
-      var s =  new Scanner({htmlDirectory: './', cssFilesWrong: ['asd']});
+      var s =  new Scanner({htmlDirectory: ['./'], cssFilesWrong: ['asd']});
       s.run().then((result)=> {
         expect(result).not.toBeDefined({});
         done();
@@ -43,7 +43,7 @@ describe('Scanner Testing', function() {
     it('should reject if no html files found', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './src',
+          htmlDirectory: ['./src'],
           cssFiles: ['./specs/css/testCssFiles/id.css'],});
       s.run().then((result)=> {
         expect(result).not.toBeDefined();
@@ -57,7 +57,7 @@ describe('Scanner Testing', function() {
     it('should reject when directory not found', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './src/unknown',
+          htmlDirectory: ['./src/unknown'],
           cssFiles: ['./specs/css/testCssFiles/id.css'],});
       s.run().then((result)=> {
         expect(result).not.toBeDefined({});
@@ -71,7 +71,7 @@ describe('Scanner Testing', function() {
     it('should return all unused id and class selectors', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
+          htmlDirectory: ['./specs/html/testAttributeFinderInHtml/**/*.html'],
           cssFiles: ['./specs/css/testCssFiles/id.css'],});
       s.run().then((result)=> {
         expect(result).toEqual(
@@ -91,7 +91,7 @@ describe('Scanner Testing', function() {
     it('should return all unused id and class selectors by using glob', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
+          htmlDirectory: ['./specs/html/testAttributeFinderInHtml/**/*.html'],
           cssFiles: ['./specs/css/**/*.css'],});
       s.run().then((result)=> {
         expect(result).toEqual(
@@ -111,7 +111,7 @@ describe('Scanner Testing', function() {
     it('should return all unused id and class selectors by using glob', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
+          htmlDirectory: ['./specs/html/testAttributeFinderInHtml/**/*.html'],
           cssFiles: ['./specs/css/**/id.css', './specs/css/**/main.css'],});
       s.run().then((result)=> {
         expect(result).toEqual(
@@ -131,14 +131,14 @@ describe('Scanner Testing', function() {
     it('should reject by using also wrong glob', (done)=> {
       var s =  new Scanner(
         {
-          htmlDirectory: './specs/html/testAttributeFinderInHtml/**/*.html',
+          htmlDirectory: ['./specs/html/testAttributeFinderInHtml/**/*.html'],
           cssFiles: ['./specs/css/**/*.css', './specs/css/**/*.HTML'],});
       s.run().then((result)=> {
         expect(result).not.toBeDefined({});
         
         done();
       }, (err)=> {
-        expect(err).toBeDefined({});
+         expect(err).toEqual('Looking for file extension:CSS, but no files found in: "./specs/css/**/*.css,./specs/css/**/*.HTML"');
         done();
       });
     });
