@@ -25,22 +25,11 @@ class Scanner {
     return attributePromises;
   }
 
-  _getCssFiles() {
-    let cssFilePromises = [];
-    // find all css files from glob
-    for (let cssConfigFile of this.conf.cssFiles) {
-      cssFilePromises.push(this._fileFinder.getFiles(cssConfigFile, 'CSS'));
-    }
-    return cssFilePromises;
-  }
-
-  _getCssSelectors(cssFilesMultipDimensionalArray) {
+  _getCssSelectors(cssFiles) {
     let cssSelectorPromises = [];
-    for (let cssFiles of cssFilesMultipDimensionalArray) {
-        for (let cssFile of cssFiles) {
-          // Add all promises in an array inorder to use Promise.all
-          cssSelectorPromises.push(this._selectorFinder.run(cssFile));
-        }
+    for (let cssFile of cssFiles) {
+        // Add all promises in an array inorder to use Promise.all
+        cssSelectorPromises.push(this._selectorFinder.run(cssFile));
     }
     return cssSelectorPromises; 
   }
@@ -57,20 +46,19 @@ class Scanner {
       spinner.setSpinnerString('|/-\\');
       spinner.start();
       // find all html files
-      let htmlFilePromise = this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML',  this.conf.excludes);
-      htmlFilePromise.then((htmlFiles) => {
+      let htmlFilePromises = this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML',  this.conf.excludes);
+      htmlFilePromises.then((htmlFiles) => {
         if (htmlFiles && htmlFiles.length > 0) {
-          var cssSelectorsInHtmlFiles;
-          var attributes;
-          var cssSelectorPromises = [];
-          var listOfUnusedClasses = [];
-          var listOfUnusedIds = [];
+          let attributes;
+          let cssSelectorPromises = [];
+          let listOfUnusedClasses = [];
+          let listOfUnusedIds = [];
           
-          Promise.all(this._getCssFiles()).then((cssFilesMultipDimensionalArray) => {
-              Promise.all(this._getCssSelectors(cssFilesMultipDimensionalArray)).then((cssSelectorList) => {
+          this._fileFinder.getFiles(this.conf.cssFiles, 'CSS').then((cssFiles) => {
+              Promise.all(this._getCssSelectors(cssFiles)).then((cssSelectorList) => {
                 Promise.all(this._getAttributes(htmlFiles)).then((value) => {
                   attributes = value [0];
-                  var countUnusedIds = 0;
+                  let countUnusedIds = 0;
                   this._selectorFinder.selectors._class.forEach(function(_class) {
                     /* istanbul ignore else */
                     if (attributes._class.indexOf(_class) === -1) {
@@ -108,9 +96,6 @@ class Scanner {
               spinner.stop();
               reject(err);
           });
-        } else {
-          spinner.stop();
-          resolve('No html files found...');
         }
       }, (err) => {
         spinner.stop();

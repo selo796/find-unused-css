@@ -1,5 +1,9 @@
 # find-unused-css Changelog
 
+## v0.5.1
+  * enabled the config for htmlDirectory as a list  
+  * bug fixing
+
 ## v0.5.0
   * added globs in config for html and css file directories
 

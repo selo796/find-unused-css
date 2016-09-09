@@ -7,7 +7,7 @@ describe('File Finder Testing', function() {
   it('should find all html files in testHTMLFolder', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./specs/modules/testHTMLFolder/**/*.html', 'HTML');
+    var promise = s.getFiles(['./specs/modules/testHTMLFolder/**/*.html'], 'HTML');
     promise.then((result) => {
       expect(result.length).toBe(6);
       done();
@@ -20,7 +20,7 @@ describe('File Finder Testing', function() {
   it('should reject when directory not found', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./specs/modules/unknown/*.html', 'HTML');
+    var promise = s.getFiles(['./specs/modules/unknown/*.html'], 'HTML');
     promise.then((result) => {
        expect(result).toEqual('No Result!');
       done();
@@ -33,7 +33,7 @@ describe('File Finder Testing', function() {
   it('should "not" filter ignored dirs', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./specs/modules/testHTMLFolder/**/*.html', 'HTML', []);
+    var promise = s.getFiles(['./specs/modules/testHTMLFolder/**/*.html'], 'HTML', []);
     promise.then((result) => {
       expect(result.length).toBe(6);
       done();
@@ -46,7 +46,7 @@ describe('File Finder Testing', function() {
   it('should filter ignored dirs', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./**/*.html', 'HTML', ['node_modules', 'coverage']);
+    var promise = s.getFiles(['./**/*.html'], 'HTML', ['node_modules', 'coverage']);
     promise.then((result) => {
       expect(result.length).toBe(8);
       done();
@@ -59,7 +59,7 @@ describe('File Finder Testing', function() {
   it('should reject when searching for html in js files', function(done) {
     var s =  new FileFinder();
 
-    var promise = s.getFiles('./**/*.js', 'HTML');
+    var promise = s.getFiles(['./**/*.js'], 'HTML');
     promise.then((result) => {
       expect(result.length).toBe(8);
       done();

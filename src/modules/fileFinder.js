@@ -40,6 +40,28 @@ class FileFinder {
   }
 
   getFiles(__glob, fileExtension, ignoredDirs) {
+    let resultPromiseList = [];
+    // find all css files from glob
+    for (let glob of __glob) {
+      resultPromiseList.push(this._getFilesFromGlob(glob, fileExtension, ignoredDirs));
+    }
+    return Promise.all(resultPromiseList).then((multipDimensionalArray)=> {
+      let result = [];
+      for (let files of multipDimensionalArray) {
+        for (let file of files) {
+          // Add all promises in an array inorder to use Promise.all
+          result.push(file);
+        }
+      }
+      return result;
+    },(err)=> {
+      return new Promise((resolve, reject) => {
+        reject('Looking for file extension:'+ fileExtension+', but no files found in: "' +  __glob + '"');
+      });
+    });
+  }
+
+  _getFilesFromGlob(__glob, fileExtension, ignoredDirs) {
     let extension = this._getRegexForFileExtension(fileExtension);
     return new Promise((resolve, reject) => {
       glob(__glob, {nonull:false},  (err, matches) => {
