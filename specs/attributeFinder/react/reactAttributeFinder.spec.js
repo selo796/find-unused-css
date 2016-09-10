@@ -1,14 +1,14 @@
 'use strict';
 
-var ReactAttributeFinder = require('../../src/react/reactAttributeFinder');
-var test1Path = './specs/react/testFiles/test1.js';
-var containsNoRender = './specs/react/testFiles/containsNoRender.js';
+var ReactAttributeFinder = require('../../../src/attributeFinder/react');
+var test1Path = './specs/attributeFinder/react/testFiles/test1.js';
+var containsNoRender = './specs/attributeFinder/react/testFiles/containsNoRender.js';
 
 describe('React Attribute Finder Testing', function() {
 
     it('should find all classes', (done) => {
         var s = new ReactAttributeFinder();
-        s.run(test1Path).then((selectors) => {
+        s.findAttribute(test1Path).then((selectors) => {
             expect(selectors._class).toEqual(['row', 'col-lg-6', 'btn-group', 'pull-right', 'show', 'hidden', 'btn', 'btn-default',
             'dropdown-toggle', 'caret', 'dropdown-menu', 'divider']);
             done();
@@ -20,7 +20,7 @@ describe('React Attribute Finder Testing', function() {
 
     it('should return empty arrays', (done) => {
         var s = new ReactAttributeFinder();
-        s.run(containsNoRender).then((selectors) => {
+        s.findAttribute(containsNoRender).then((selectors) => {
             expect(selectors._class).toEqual([]);
             done();
         }, (err) => {

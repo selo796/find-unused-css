@@ -1,16 +1,7 @@
 'use strict';
+let Strategy = require('./strategy').AbstractAttributeFinder;
 
-let Util = require('../modules/util');
-
-class AttributeFinder {
-
-  constructor() {
-    this.attributes = {
-      _class: [],
-      _id: [],
-    };
-    this._util = new Util();
-  }
+class AttributeFinder extends Strategy {
 
   findAttribute(filePath) {
     return new Promise((resolve, reject) => {

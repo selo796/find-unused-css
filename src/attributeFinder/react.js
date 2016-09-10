@@ -1,24 +1,17 @@
 'use strict';
 
-let Util = require('../modules/util');
+let Strategy = require('./strategy').AbstractAttributeFinder;
 const returnRegex = /return.\(([^)]+)\)/g;
 const parenthesesRegex = /\(([^)]+)\)/g;
 
-class ReactAttributeFinder {
+class ReactAttributeFinder extends Strategy {
 
-  constructor() {
-    this.attributes = {
-      _class: [],
-      _id: [],
-    };
-    this._util = new Util();
-  }
-
-  run(reactFile) {
+  findAttribute(reactFile) {
     return new Promise((resolve, reject) => {
       this._util.readFile(reactFile).then((file) => {
         if (returnRegex.test(file)) {
           let returnStr = (file.match(returnRegex))[0];
+          // html-snippet in renderer function
           let html = (returnStr.match(parenthesesRegex))[0];
           if (html) {
             this._util.findHTMLAttributes(html).then((result)=>{

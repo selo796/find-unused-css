@@ -1,9 +1,9 @@
 'use strict';
 
-var AttributeFinder = require('../../src/html/attributeFinder');
+var AttributeFinder = require('../../../src/attributeFinder/html');
 
-var filePath = './specs/html/testAttributeFinderInHtml/test.html';
-var filePath2 = './specs/html/testAttributeFinderInHtml/test2.html';
+var filePath = './specs/attributeFinder/html/testAttributeFinderInHtml/test.html';
+var filePath2 = './specs/attributeFinder//html/testAttributeFinderInHtml/test2.html';
 
 describe('Attribute Finder Testing', function() {
 

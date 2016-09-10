@@ -3,7 +3,9 @@
 let Spinner = require('cli-spinner').Spinner;
 let FileFinderModule = require('./modules/fileFinder');
 let SelectorFinderModule = require('./css/selectorFinder');
-let AttributeFinderModele = require('./html/attributeFinder');
+let AttributeFinder = require('./attributeFinder/strategy').attributeFinder;
+let HTMLAttributeFinder = require('./attributeFinder/html');
+let ReactAttributeFinderModele = require('./attributeFinder/react');
 
 let spinner = new Spinner('Analyzing .. %s');
 
@@ -13,14 +15,14 @@ class Scanner {
     this.conf = configObj;
     this._fileFinder = new FileFinderModule();
     this._selectorFinder = new SelectorFinderModule();
-    this._attributeFinder = new AttributeFinderModele();
+    this._attributeFinderHTML = new AttributeFinder(new HTMLAttributeFinder());
   }
 
-  _getAttributes(htmlFiles) {
+  _getAttributes(files) {
     let attributePromises = [];
-    for (let htmlFile of htmlFiles) {
+    for (let file of files) {
       // Add all promises in an array inorder to use Promise.all
-      attributePromises.push(this._attributeFinder.findAttribute(htmlFile));
+      attributePromises.push(this._attributeFinderHTML.execute(file));
     }
     return attributePromises;
   }
