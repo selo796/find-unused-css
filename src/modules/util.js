@@ -15,7 +15,6 @@ class Util {
                 if (err) {
                     reject(err);
                 }
-
                 resolve(data);
             });
         });
@@ -25,7 +24,7 @@ class Util {
         let parser;
         let _this = this;
         const bracketRegex = /\{([^)]+)\}/g;
-        
+
         return new Promise((resolve, reject) => {
             parser = new htmlparser.Parser({
                 onattribute: function (name, value) {
@@ -38,7 +37,7 @@ class Util {
                             value = classesWithoutBraket;
                             for(let _clazz of classesWithoutQuery.split(':')){
                                 _clazz = _clazz.replace(/'/g, '').trim();
-                                value +=' ' + _clazz; 
+                                value +=' ' + _clazz;
                             }
                         }
                         for (let cssClass of value.split(' ')) {

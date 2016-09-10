@@ -195,7 +195,7 @@ describe('CSS-Selector Finder Testing', ()=> {
       });
     });
 
-    it('should throw an error with "css file not found."', ()=> {
+    it('should throw an error with "css file not found."', (done)=> {
       var cssFiles1 = './specs/css/testCssFiles/css_file_not_found.css';
 
       var promise1 = s.run(cssFiles1);
@@ -203,13 +203,7 @@ describe('CSS-Selector Finder Testing', ()=> {
           expect(result).not.toBeDefined();
           done();
       }, (err) => {
-          expect(err).toEqual(
-            {
-              errno : -2,
-              code : 'ENOENT',
-              syscall : 'open',
-              path : 'specs/css/testCssFiles/css_file_not_found.css'
-            });
+          expect(err).toBeDefined();
           done();
       });
     });

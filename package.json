@@ -16,7 +16,8 @@
     "search",
     "analyze",
     "findcss",
-    "css"
+    "css",
+    "react"
   ],
   "engines": {
     "node": ">= 0.12.0"

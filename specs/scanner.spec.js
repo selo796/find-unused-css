@@ -135,7 +135,6 @@ describe('Scanner Testing', function() {
           cssFiles: ['./specs/css/**/*.css', './specs/css/**/*.HTML'],});
       s.run().then((result)=> {
         expect(result).not.toBeDefined({});
-        
         done();
       }, (err)=> {
          expect(err).toEqual('Looking for file extension:CSS, but no files found in: "./specs/css/**/*.css,./specs/css/**/*.HTML"');

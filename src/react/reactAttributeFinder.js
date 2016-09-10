@@ -19,7 +19,7 @@ class ReactAttributeFinder {
       this._util.readFile(reactFile).then((file) => {
         if (returnRegex.test(file)) {
           let returnStr = (file.match(returnRegex))[0];
-          let html = parenthesesRegex.exec(returnStr)[1];
+          let html = (returnStr.match(parenthesesRegex))[0];
           if (html) {
             this._util.findHTMLAttributes(html).then((result)=>{
               this.attributes = result;
@@ -27,6 +27,8 @@ class ReactAttributeFinder {
             },(err)=>{
               reject(err);
             });
+          } else {
+            reject('An error occurs while parsing '+ reactFile);
           }
         }
       }, (err) => {
