@@ -31,7 +31,7 @@ class Scanner {
         // Add all promises in an array inorder to use Promise.all
         cssSelectorPromises.push(this._selectorFinder.run(cssFile));
     }
-    return cssSelectorPromises; 
+    return cssSelectorPromises;
   }
 
   run() {
@@ -53,9 +53,10 @@ class Scanner {
           let cssSelectorPromises = [];
           let listOfUnusedClasses = [];
           let listOfUnusedIds = [];
-          
+
           this._fileFinder.getFiles(this.conf.cssFiles, 'CSS').then((cssFiles) => {
               Promise.all(this._getCssSelectors(cssFiles)).then((cssSelectorList) => {
+                // find all class selectors in html files
                 Promise.all(this._getAttributes(htmlFiles)).then((value) => {
                   attributes = value [0];
                   let countUnusedIds = 0;

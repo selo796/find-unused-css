@@ -28,8 +28,10 @@ class ReactAttributeFinder {
               reject(err);
             });
           } else {
-            reject('An error occurs while parsing '+ reactFile);
+            resolve(this.attributes);
           }
+        } else {
+          resolve(this.attributes);
         }
       }, (err) => {
         reject(err);

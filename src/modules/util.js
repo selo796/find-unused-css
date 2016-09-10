@@ -20,6 +20,21 @@ class Util {
         });
     }
 
+    _getClassesForReact(className) {
+        let result = '';
+        let classesWithoutBraket = className.split('{')[0].trim();
+        let classesWithBraket = className.split('{')[1].trim();
+        let classesWithoutQuery = classesWithBraket.split('?')[1];
+        classesWithoutQuery = classesWithoutQuery.substring(0, classesWithoutQuery.indexOf('}'));
+        result = classesWithoutBraket;
+        for(let _clazz of classesWithoutQuery.split(':')){
+            _clazz = _clazz.replace(/'/g, '').trim();
+            result +=' ' + _clazz;
+        }
+
+        return result.trim();
+    }
+
     findHTMLAttributes(html) {
         let parser;
         let _this = this;
@@ -30,15 +45,7 @@ class Util {
                 onattribute: function (name, value) {
                     if (name === 'class' || name === 'classname') {
                         if (bracketRegex.test(value)) {
-                            let classesWithoutBraket = value.split('{')[0].trim();
-                            let classesWithBraket = value.split('{')[1].trim();
-                            let classesWithoutQuery = classesWithBraket.split('?')[1];
-                            classesWithoutQuery = classesWithoutQuery.substring(0, classesWithoutQuery.indexOf('}'));
-                            value = classesWithoutBraket;
-                            for(let _clazz of classesWithoutQuery.split(':')){
-                                _clazz = _clazz.replace(/'/g, '').trim();
-                                value +=' ' + _clazz;
-                            }
+                            value = _this._getClassesForReact(value);
                         }
                         for (let cssClass of value.split(' ')) {
                             if (_this.attributes._class.indexOf(cssClass) === -1) {
