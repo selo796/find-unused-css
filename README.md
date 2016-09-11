@@ -27,10 +27,15 @@ Create a config file namely "*findUnusedCss.json*" with following options:
 {
    // paths of css files for analyzing
   "cssFiles": ["./dist/css/*.css"],
-  // path of html directory for analyzing
-  "htmlDirectory": ["./dist/**/*.html"],
-  // list of html folders, which are excluded during analyzing
-  "excludes": ["./node_modules"],
+  // path of source codes such as html or js files
+  "source_files": ["./pages/**/*.html", './app/**/.js'],
+  // optins for analyzing
+  "options" : {
+    "htmlAnalyzing": true|false, // default true
+    "reactAnalyzing": true|false // default false
+  },
+  // list of folders, which are excluded during analyzing
+  "excludes": ["./node_modules"]
 }
 ```
 
@@ -42,7 +47,7 @@ After running *find-unused-css* you will get two questions from command line
 
   Enter a target css file e.g `dist/css/main.css`
 
-  2. **Path of your html directory**  
+  2. **Path of your html directory**
   Enter a path of html directory which you would like to scan for unused css selectors e.g `dist/html`.
 
 Once you answered these two questions, your css selectors are scanned for given directory.

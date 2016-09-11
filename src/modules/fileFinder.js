@@ -13,12 +13,21 @@ class FileFinder {
     };
   }
 
-  _filterDirs (files, extension, ignoredDirs) {
+  _filterDirs (files, extensionList, ignoredDirs) {
     let result = [];
     let isNotIgnored = true;
+    let toBeAnalyzed = true;
     return new Promise((resolve, reject) => {
       for (let file of files) {
-        if(!extension.test(file)) {
+        toBeAnalyzed = true;
+        for (let extension of extensionList) {
+          if(!extension.test(file)) {
+            toBeAnalyzed = false;
+            break;
+          }
+        }
+
+        if(!toBeAnalyzed){
           continue;
         }
         isNotIgnored = true;
@@ -61,16 +70,16 @@ class FileFinder {
     });
   }
 
-  _getFilesFromGlob(__glob, fileExtension, ignoredDirs) {
-    let extension = this._getRegexForFileExtension(fileExtension);
+  _getFilesFromGlob(__glob, fileExtensionList, ignoredDirs) {
+    let extensionList = this._getRegexForFileExtension(fileExtensionList);
     return new Promise((resolve, reject) => {
       glob(__glob, {nonull:false},  (err, matches) => {
         if (err) {
           reject('An error occurs while searching for files in ' + __glob, err);
         }
-        this._filterDirs(matches, extension, ignoredDirs).then((result)=> {
-            if(result.length === 0 || (__glob && matches[0] === __glob && !extension.test(matches[0]))) {
-              reject('Looking for file extension:'+ fileExtension+', but no files found in: "' +  __glob + '"');
+        this._filterDirs(matches, extensionList, ignoredDirs).then((result)=> {
+            if(result.length === 0 || (__glob && matches[0] === __glob && result===__glob)) {
+              reject('Looking for file extension:'+ fileExtensionList+', but no files found in: "' +  __glob + '"');
             }
             resolve(result);
           }, (err)=> {
@@ -80,8 +89,11 @@ class FileFinder {
     });
   }
 
-  _getRegexForFileExtension(fileExtension) {
-    var result =  this.fileExtensionObj[fileExtension];
+  _getRegexForFileExtension(extensionList) {
+    var result = [];
+    for(let extension of extensionList) {
+      result.push(this.fileExtensionObj[extensionList]);
+    }
 
     if (result) {
       return result;

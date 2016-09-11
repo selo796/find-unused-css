@@ -19,9 +19,9 @@ function readConfigFromCommandLine() {
   });
 
   rl.question('Path of your css file? ', (cssPath) => {
-    rl.question('Path of your html directory? ', (htmlDirectory) => {
+    rl.question('Path of your source code directory? ', (directory) => {
       var confObj = {
-        htmlDirectory: htmlDirectory,
+        source_files: [directory],
         cssFiles: [cssPath],
       };
       report(confObj);

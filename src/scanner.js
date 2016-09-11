@@ -48,15 +48,23 @@ class Scanner {
       spinner.setSpinnerString('|/-\\');
       spinner.start();
       // find all html files
-      let htmlFilePromises = this._fileFinder.getFiles(this.conf.htmlDirectory, 'HTML',  this.conf.excludes);
-      htmlFilePromises.then((htmlFiles) => {
+      let fileExtensions = [];
+      if(this.conf.options.htmlAnalyzing) {
+        fileExtensions.push('HTML');
+      }
+      if(this.conf.options.reactAnalyzing) {
+        fileExtensions.push('JS');
+      }
+
+      let sourceFiles = this._fileFinder.getFiles(this.conf.source_files, fileExtensions,  this.conf.excludes);
+      sourceFiles.then((htmlFiles) => {
         if (htmlFiles && htmlFiles.length > 0) {
           let attributes;
           let cssSelectorPromises = [];
           let listOfUnusedClasses = [];
           let listOfUnusedIds = [];
 
-          this._fileFinder.getFiles(this.conf.cssFiles, 'CSS').then((cssFiles) => {
+          this._fileFinder.getFiles(this.conf.cssFiles, ['CSS']).then((cssFiles) => {
               Promise.all(this._getCssSelectors(cssFiles)).then((cssSelectorList) => {
                 // find all class selectors in html files
                 Promise.all(this._getAttributes(htmlFiles)).then((value) => {
@@ -111,10 +119,17 @@ class Scanner {
   _checkConfig() {
     if (!this.conf) {
       throw 'Config file is not found.';
-    } else if (!this.conf.htmlDirectory) {
-      throw 'Please check your config file. No htmlDirectory is defined.';
+    } else if (!this.conf.source_files) {
+      throw 'Please check your config file. No source_files is defined.';
     } else if (!this.conf.cssFiles) {
       throw 'Please check your config file. No cssFiles is defined.';
+    }
+
+    if(!this.conf.options) {
+      this.conf.options = {
+        htmlAnalyzing: true,
+        reactAnalyzing: false
+      };
     }
     return true;
   }
