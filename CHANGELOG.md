@@ -1,5 +1,8 @@
 # find-unused-css Changelog
 
+## v0.6.0
+  * enabled react file analyzing
+
 ## v0.5.1
   * enabled the config for htmlDirectory as a list  
   * bug fixing

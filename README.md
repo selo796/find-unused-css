@@ -48,12 +48,15 @@ After running *find-unused-css* you will get two questions from command line
   Enter a target css file e.g `./css/**/*.css`
 
   2. **Path of your html directory**
+
   Enter a path of html directory which you would like to scan for unused css selectors e.g `./pages/**/*.html`.
 
   3. **Enable Html file analzing**
+
   Enter 1 for enabling html file analyze, 0 otherwise.
 
   4. **Enable React analzing**
+
   Enter 1 for enabling react file analyze, 0 otherwise.
 
 Once you answered these two questions, your css selectors are scanned for given directory.
@@ -73,7 +76,6 @@ Issues can be reported on the [issue tracker](https://github.com/selo796/find-un
 ## What is next?
 
  - Improving the output instead of command line
- - Read config file from command line
  - Support for attribute selectors
  - Support for AngularJS, jquery
 
