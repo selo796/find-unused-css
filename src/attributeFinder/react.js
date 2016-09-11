@@ -15,6 +15,7 @@ class ReactAttributeFinder extends Strategy {
           for (let returnStr of returnStrList) {
             // html-snippet in renderer function
             let html = (returnStr.match(parenthesesRegex))[0];
+            /* istanbul ignore else */
             if (html) {
               resultPromiseList.push(this._util.findHTMLAttributes(html));
             }

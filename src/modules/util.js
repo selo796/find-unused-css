@@ -32,7 +32,6 @@ class Util {
             _clazz = _clazz.replace(/'/g, '').trim();
             result += ' ' + _clazz;
         }
-
         return result.trim();
     }
 

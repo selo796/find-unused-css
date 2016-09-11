@@ -2,6 +2,7 @@
 
 var ReactAttributeFinder = require('../../../src/attributeFinder/react');
 var test1Path = './specs/attributeFinder/react/testFiles/test1.js';
+var testWithID = './specs/attributeFinder/react/testFiles/testWithID.js';
 var multipleReturnPath = './specs/attributeFinder/react/testFiles/multipleReturns.js';
 var containsNoRender = './specs/attributeFinder/react/testFiles/containsNoRender.js';
 
@@ -34,6 +35,7 @@ describe('React Attribute Finder Testing', function () {
         var s = new ReactAttributeFinder();
         s.findAttribute(multipleReturnPath).then((selectors) => {
             expect(selectors._class).toEqual(['App', 'Master', 'Detail']);
+            expect(selectors._id).toEqual([]);
             done();
         }, (err) => {
             expect(err).not.toBeDefined();
@@ -42,5 +44,15 @@ describe('React Attribute Finder Testing', function () {
 
     });
 
-
+    it('should find all ids', (done) => {
+        var s = new ReactAttributeFinder();
+        s.findAttribute(testWithID).then((selectors) => {
+            expect(selectors._class).toEqual(['divider']);
+            expect(selectors._id).toEqual(['my-id1', 'my-id2']);
+            done();
+        }, (err) => {
+            expect(err).not.toBeDefined();
+            done();
+        });
+    });
 });
