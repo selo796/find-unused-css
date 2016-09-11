@@ -2,9 +2,9 @@
 
 ## v0.6.0
   * enabled react file analyzing
-
+  * Improved README.md
 ## v0.5.1
-  * enabled the config for htmlDirectory as a list  
+  * enabled the config for htmlDirectory as a list
   * bug fixing
 
 ## v0.5.0
