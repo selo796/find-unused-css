@@ -23,8 +23,8 @@ class CommandLineReporter {
           'Id "' + chalk.bgYellow.bold(_id) + '" not used');
       }
 
-      this._printItInColor('Number of scanned html files: ' +
-        resultObj.totalNumberOfHtmlFiles);
+      this._printItInColor('Number of scanned files: ' +
+        resultObj.totalNumberOfScannedFiles);
 
       this._printItInColor('Number of all css classes: ' +
         resultObj.totalNumberOfClassSelectors);

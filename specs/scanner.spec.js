@@ -75,7 +75,7 @@ describe('Scanner Testing', function() {
           cssFiles: ['./specs/css/testCssFiles/id.css'],});
       s.run().then((result)=> {
         expect(result).toEqual(
-          { totalNumberOfHtmlFiles: 2,
+          { totalNumberOfScannedFiles: 2,
             totalNumberOfClassSelectors: 1,
             totalNumberOfIdSelectors: 2,
             numberOfUnusedIds: 2,
@@ -92,10 +92,10 @@ describe('Scanner Testing', function() {
       var s =  new Scanner(
         {
           source_files: ['./specs/attributeFinder/html/testAttributeFinderInHtml/**/*.html'],
-          cssFiles: ['./specs/css/**/*.css'],});
+          cssFiles: ['./specs/css/**/main.css', './specs/css/**/id.css']});
       s.run().then((result)=> {
         expect(result).toEqual(
-          { totalNumberOfHtmlFiles: 2,
+          { totalNumberOfScannedFiles: 2,
             totalNumberOfClassSelectors: 3,
             totalNumberOfIdSelectors: 2,
             numberOfUnusedIds: 2,
@@ -115,7 +115,7 @@ describe('Scanner Testing', function() {
           cssFiles: ['./specs/css/**/id.css', './specs/css/**/main.css'],});
       s.run().then((result)=> {
         expect(result).toEqual(
-          { totalNumberOfHtmlFiles: 2,
+          { totalNumberOfScannedFiles: 2,
             totalNumberOfClassSelectors: 3,
             totalNumberOfIdSelectors: 2,
             numberOfUnusedIds: 2,
@@ -132,12 +132,37 @@ describe('Scanner Testing', function() {
       var s =  new Scanner(
         {
           source_files: ['./specs/attributeFinder/html/testAttributeFinderInHtml/**/*.html'],
-          cssFiles: ['./specs/css/**/*.css', './specs/css/**/*.HTML'],});
+          cssFiles: ['./specs/css/**/*.css', './specs/css/**/*.html'],});
       s.run().then((result)=> {
         expect(result).not.toBeDefined({});
         done();
       }, (err)=> {
-         expect(err).toEqual('Looking for file extension:CSS, but no files found in: "./specs/css/**/*.css,./specs/css/**/*.HTML"');
+         expect(err).toEqual('Looking for file extension:CSS, but no files found in: "./specs/css/**/*.css,./specs/css/**/*.html"');
+        done();
+      });
+    });
+
+     it('should return all unused id and class selectors by using html as well as react files', (done)=> {
+      var reactFilePath = './specs/attributeFinder/react/testFiles/test1.js';
+      var s =  new Scanner(
+        {
+          source_files: ['./specs/attributeFinder/html/testAttributeFinderInHtml/**/*.html', reactFilePath],
+          cssFiles: ['./specs/css/**/id.css', './specs/css/**/main.css', './specs/css/**/react.css'],
+          options: {
+            reactAnalyzing:true
+          }
+        });
+      s.run().then((result)=> {
+        expect(result).toEqual(
+          { totalNumberOfScannedFiles: 3,
+            totalNumberOfClassSelectors: 5,
+            totalNumberOfIdSelectors: 2,
+            numberOfUnusedIds: 2,
+            unusedClasses: [ 'text-transform--none', 'myClass', 'myTestClass', 'react-main-one'],
+            unusedIds: [ 'myTestID1', 'myTestID' ], });
+        done();
+      }, (err)=> {
+        expect(err).not.toBeDefined();
         done();
       });
     });

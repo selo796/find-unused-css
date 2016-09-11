@@ -16,13 +16,19 @@ class Scanner {
     this._fileFinder = new FileFinderModule();
     this._selectorFinder = new SelectorFinderModule();
     this._attributeFinderHTML = new AttributeFinder(new HTMLAttributeFinder());
+    this._attributeFinderReact = new AttributeFinder(new ReactAttributeFinderModele());
   }
 
   _getAttributes(files) {
     let attributePromises = [];
     for (let file of files) {
-      // Add all promises in an array inorder to use Promise.all
-      attributePromises.push(this._attributeFinderHTML.execute(file));
+      if(this.conf.options.htmlAnalyzing && /\.html$/.test(file)) {
+        // Add all promises in an array inorder to use Promise.all
+        attributePromises.push(this._attributeFinderHTML.execute(file));
+      } else if(this.conf.options.reactAnalyzing && /\.js$/.test(file)) {
+        // Add all promises in an array inorder to use Promise.all
+        attributePromises.push(this._attributeFinderReact.execute(file));
+      }
     }
     return attributePromises;
   }
@@ -57,9 +63,12 @@ class Scanner {
       }
 
       let sourceFiles = this._fileFinder.getFiles(this.conf.source_files, fileExtensions,  this.conf.excludes);
-      sourceFiles.then((htmlFiles) => {
-        if (htmlFiles && htmlFiles.length > 0) {
-          let attributes;
+      sourceFiles.then((files) => {
+        if (files && files.length > 0) {
+          let attributes = {
+            _class :[],
+            _id:[]
+          };
           let cssSelectorPromises = [];
           let listOfUnusedClasses = [];
           let listOfUnusedIds = [];
@@ -67,8 +76,13 @@ class Scanner {
           this._fileFinder.getFiles(this.conf.cssFiles, ['CSS']).then((cssFiles) => {
               Promise.all(this._getCssSelectors(cssFiles)).then((cssSelectorList) => {
                 // find all class selectors in html files
-                Promise.all(this._getAttributes(htmlFiles)).then((value) => {
-                  attributes = value [0];
+                Promise.all(this._getAttributes(files)).then((attributeObjList) => {
+
+                  for(let attr of attributeObjList) {
+                    attributes._class = (attributes._class).concat(attr._class);
+                    attributes._id= (attributes._id).concat(attr._id);
+                  }
+
                   let countUnusedIds = 0;
                   this._selectorFinder.selectors._class.forEach(function(_class) {
                     /* istanbul ignore else */
@@ -88,7 +102,7 @@ class Scanner {
                   spinner.stop();
 
                   resolve({
-                    totalNumberOfHtmlFiles: htmlFiles.length,
+                    totalNumberOfScannedFiles: files.length,
                     totalNumberOfClassSelectors: this._selectorFinder.selectors._class.length,
                     totalNumberOfIdSelectors: this._selectorFinder.selectors._id.length,
                     numberOfUnusedIds: countUnusedIds,
@@ -124,13 +138,10 @@ class Scanner {
     } else if (!this.conf.cssFiles) {
       throw 'Please check your config file. No cssFiles is defined.';
     }
+    this.conf.options = (this.conf.options || {});
+    this.conf.options.htmlAnalyzing = this.conf.options.htmlAnalyzing ? this.conf.options.htmlAnalyzing : true;
+    this.conf.options.reactAnalyzing = this.conf.options.reactAnalyzing ? this.conf.options.reactAnalyzing : false;
 
-    if(!this.conf.options) {
-      this.conf.options = {
-        htmlAnalyzing: true,
-        reactAnalyzing: false
-      };
-    }
     return true;
   }
 }

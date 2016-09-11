@@ -2,7 +2,7 @@
 var TopicNav = React.createClass({
 render: function() {
 return (
-    <div className="row">
+    <div className="row react-main">
         <div className="col-lg-6">
             <div className="btn-group pull-right {this.props.showBulkActions ? 'show' : 'hidden'}">
                 <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

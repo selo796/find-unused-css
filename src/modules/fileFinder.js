@@ -19,17 +19,20 @@ class FileFinder {
     let toBeAnalyzed = true;
     return new Promise((resolve, reject) => {
       for (let file of files) {
-        toBeAnalyzed = true;
+
+        toBeAnalyzed = false;
         for (let extension of extensionList) {
-          if(!extension.test(file)) {
-            toBeAnalyzed = false;
-            break;
-          }
+            toBeAnalyzed = toBeAnalyzed || extension.test(file);
+            if (toBeAnalyzed) {
+              break;
+            }
         }
+
 
         if(!toBeAnalyzed){
           continue;
         }
+
         isNotIgnored = true;
         if(ignoredDirs) {
             for (let ignoredDir of ignoredDirs) {
@@ -90,9 +93,10 @@ class FileFinder {
   }
 
   _getRegexForFileExtension(extensionList) {
+
     var result = [];
     for(let extension of extensionList) {
-      result.push(this.fileExtensionObj[extensionList]);
+      result.push(this.fileExtensionObj[extension]);
     }
 
     if (result) {

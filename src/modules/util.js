@@ -9,6 +9,7 @@ class Util {
             _id: [],
         };
     }
+
     readFile(filePath) {
         return new Promise(function (resolve, reject) {
             fs.readFile(filePath, 'utf8', function (err, data) {
@@ -27,9 +28,9 @@ class Util {
         let classesWithoutQuery = classesWithBraket.split('?')[1];
         classesWithoutQuery = classesWithoutQuery.substring(0, classesWithoutQuery.indexOf('}'));
         result = classesWithoutBraket;
-        for(let _clazz of classesWithoutQuery.split(':')){
+        for (let _clazz of classesWithoutQuery.split(':')) {
             _clazz = _clazz.replace(/'/g, '').trim();
-            result +=' ' + _clazz;
+            result += ' ' + _clazz;
         }
 
         return result.trim();
