@@ -79,8 +79,12 @@ class Scanner {
                 Promise.all(this._getAttributes(files)).then((attributeObjList) => {
 
                   for(let attr of attributeObjList) {
-                    attributes._class = (attributes._class).concat(attr._class);
-                    attributes._id= (attributes._id).concat(attr._id);
+                    attributes._class = (attributes._class).concat(attr._class.filter((item)=> {
+                        return attributes._class.indexOf(item) < 0;
+                    }));
+                    attributes._id= (attributes._id).concat(attr._id.filter((item)=> {
+                        return attributes._id.indexOf(item) < 0;
+                    }));
                   }
 
                   let countUnusedIds = 0;

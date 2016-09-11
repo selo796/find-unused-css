@@ -2,15 +2,16 @@
 
 var ReactAttributeFinder = require('../../../src/attributeFinder/react');
 var test1Path = './specs/attributeFinder/react/testFiles/test1.js';
+var multipleReturnPath = './specs/attributeFinder/react/testFiles/multipleReturns.js';
 var containsNoRender = './specs/attributeFinder/react/testFiles/containsNoRender.js';
 
-describe('React Attribute Finder Testing', function() {
+describe('React Attribute Finder Testing', function () {
 
     it('should find all classes', (done) => {
         var s = new ReactAttributeFinder();
         s.findAttribute(test1Path).then((selectors) => {
-            expect(selectors._class).toEqual(['row','react-main', 'col-lg-6', 'btn-group', 'pull-right', 'show', 'hidden', 'btn', 'btn-default',
-            'dropdown-toggle', 'caret', 'dropdown-menu', 'divider']);
+            expect(selectors._class).toEqual(['row', 'react-main', 'col-lg-6', 'btn-group', 'pull-right', 'show', 'hidden', 'btn', 'btn-default',
+                'dropdown-toggle', 'caret', 'dropdown-menu', 'divider']);
             done();
         }, (err) => {
             expect(err).not.toBeDefined();
@@ -28,5 +29,18 @@ describe('React Attribute Finder Testing', function() {
             done();
         });
     });
+
+    it('should return all attributes from multiple "returns"', (done) => {
+        var s = new ReactAttributeFinder();
+        s.findAttribute(multipleReturnPath).then((selectors) => {
+            expect(selectors._class).toEqual(['App', 'Master', 'Detail']);
+            done();
+        }, (err) => {
+            expect(err).not.toBeDefined();
+            done();
+        });
+
+    });
+
 
 });

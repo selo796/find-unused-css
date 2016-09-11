@@ -28,5 +28,15 @@ describe('Utility Testing', ()=> {
                 expect(err).not.toBeDefined();
             });
         });
+
+        it('should find  class "Detail" for react', (done)=> {
+            u.findHTMLAttributes(`<div className="Detail">`).then((result)=>{
+                expect(result._class).toEqual(['Detail']);
+                expect(result._id).toEqual([]);
+                done();
+            },(err)=> {
+                expect(err).not.toBeDefined();
+            });
+        });
     });
 });
