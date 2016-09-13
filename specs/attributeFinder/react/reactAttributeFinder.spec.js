@@ -5,8 +5,31 @@ var test1Path = './specs/attributeFinder/react/testFiles/test1.js';
 var testWithID = './specs/attributeFinder/react/testFiles/testWithID.js';
 var multipleReturnPath = './specs/attributeFinder/react/testFiles/multipleReturns.js';
 var containsNoRender = './specs/attributeFinder/react/testFiles/containsNoRender.js';
+var noHTMLinReturnPath = './specs/attributeFinder/react/testFiles/noHTMLinReturn.js';
 
 describe('React Attribute Finder Testing', function () {
+
+    it('should reject an error if css file not found', (done) => {
+        var s = new ReactAttributeFinder();
+        s.findAttribute('wrongCssPath.css').then((selectors) => {
+            expect(selectors).not.toBeDefined();
+            done();
+        }, (err) => {
+            expect(err).toEqual('An error occurs while reading the file: wrongCssPath.css');
+            done();
+        });
+    });
+
+    it('should resolve empty array if not html in return', (done) => {
+        var s = new ReactAttributeFinder();
+        s.findAttribute(noHTMLinReturnPath).then((selectors) => {
+            expect(selectors._class).toEqual([]);
+            done();
+        }, (err) => {
+            expect(err).not.toBeDefined();
+            done();
+        });
+    });
 
     it('should find all classes', (done) => {
         var s = new ReactAttributeFinder();

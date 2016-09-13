@@ -28,9 +28,9 @@ class SelectorFinder {
 
       var currentClass;
 
-      text.forEach((_class)=> {
+      text.forEach((_class) => {
         currentClass = _class.split(splitter);
-        currentClass.forEach((c)=> {
+        currentClass.forEach((c) => {
           if (c && this.isCssSelectorValid(c)) {
             c = this.filter.filterSelector(c);
             this.pushIntoSelectors(c, selector);

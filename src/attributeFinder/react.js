@@ -21,28 +21,25 @@ class ReactAttributeFinder extends Strategy {
             }
           }
 
-          if (resultPromiseList.length > 0) {
-            Promise.all(resultPromiseList).then((resultList) => {
-              for (let attr of resultList) {
-                this.attributes._class = (this.attributes._class).concat(attr._class.filter((item) => {
-                  return this.attributes._class.indexOf(item) < 0;
-                }));
-                this.attributes._id = (this.attributes._id).concat(attr._id.filter((item) => {
-                  return this.attributes._id.indexOf(item) < 0;
-                }));
-              }
-              resolve(this.attributes);
-            }, (err) => {
-              reject(err);
-            });
-          } else {
+          Promise.all(resultPromiseList).then((resultList) => {
+            for (let attr of resultList) {
+              this.attributes._class = (this.attributes._class).concat(attr._class.filter((item) => {
+                return this.attributes._class.indexOf(item) < 0;
+              }));
+              this.attributes._id = (this.attributes._id).concat(attr._id.filter((item) => {
+                return this.attributes._id.indexOf(item) < 0;
+              }));
+            }
             resolve(this.attributes);
-          }
+          }, (err) => {
+            reject(err);
+          });
         } else {
           resolve(this.attributes);
         }
+
       }, (err) => {
-        reject(err);
+        reject('An error occurs while reading the file: ' + reactFile);
       });
     });
   }

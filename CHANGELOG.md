@@ -1,5 +1,9 @@
 # find-unused-css Changelog
 
+## v0.6.1
+  * fixed some bugs
+  * Improved README.md
+
 ## v0.6.0
   * enabled react file analyzing
   * Improved README.md

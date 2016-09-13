@@ -13,7 +13,7 @@ class FileFinder {
     };
   }
 
-  _filterDirs (files, extensionList, ignoredDirs) {
+  _filterDirs(files, extensionList, ignoredDirs) {
     let result = [];
     let isNotIgnored = true;
     let toBeAnalyzed = true;
@@ -22,20 +22,19 @@ class FileFinder {
 
         toBeAnalyzed = false;
         for (let extension of extensionList) {
-            toBeAnalyzed = toBeAnalyzed || extension.test(file);
-            if (toBeAnalyzed) {
-              break;
-            }
+          toBeAnalyzed = toBeAnalyzed || extension.test(file);
+          if (toBeAnalyzed) {
+            break;
+          }
         }
 
-
-        if(!toBeAnalyzed){
+        if (!toBeAnalyzed) {
           continue;
         }
 
         isNotIgnored = true;
-        if(ignoredDirs) {
-            for (let ignoredDir of ignoredDirs) {
+        if (ignoredDirs) {
+          for (let ignoredDir of ignoredDirs) {
             ignoredDir = path.normalize(ignoredDir);
             isNotIgnored =
               isNotIgnored && path.dirname(file).indexOf(ignoredDir) === -1;
@@ -52,12 +51,19 @@ class FileFinder {
   }
 
   getFiles(__glob, fileExtension, ignoredDirs) {
+    __glob = (__glob || []);
     let resultPromiseList = [];
     // find all css files from glob
     for (let glob of __glob) {
       resultPromiseList.push(this._getFilesFromGlob(glob, fileExtension, ignoredDirs));
     }
-    return Promise.all(resultPromiseList).then((multipDimensionalArray)=> {
+
+    if (__glob.length === 0) {
+      return new Promise((resolve, reject) => {
+        reject('Please check your configuration for ' + fileExtension);
+      });
+    }
+    return Promise.all(resultPromiseList).then((multipDimensionalArray) => {
       let result = [];
       for (let files of multipDimensionalArray) {
         for (let file of files) {
@@ -65,10 +71,15 @@ class FileFinder {
           result.push(file);
         }
       }
+      if (result.length === 0) {
+        return new Promise((resolve, reject) => {
+          reject('Looking for file extension:' + fileExtension + ', but no files found in: "' + __glob + '"');
+        });
+      }
       return result;
-    },(err)=> {
+    }, (err) => {
       return new Promise((resolve, reject) => {
-        reject('Looking for file extension:'+ fileExtension+', but no files found in: "' +  __glob + '"');
+        reject('Looking for file extension:' + fileExtension + ', but no files found in: "' + __glob + '"');
       });
     });
   }
@@ -76,18 +87,15 @@ class FileFinder {
   _getFilesFromGlob(__glob, fileExtensionList, ignoredDirs) {
     let extensionList = this._getRegexForFileExtension(fileExtensionList);
     return new Promise((resolve, reject) => {
-      glob(__glob, {nonull:false},  (err, matches) => {
+      glob(__glob, { nonull: false }, (err, matches) => {
         if (err) {
           reject('An error occurs while searching for files in ' + __glob, err);
         }
-        this._filterDirs(matches, extensionList, ignoredDirs).then((result)=> {
-            if(result.length === 0 || (__glob && matches[0] === __glob && result===__glob)) {
-              reject('Looking for file extension:'+ fileExtensionList+', but no files found in: "' +  __glob + '"');
-            }
-            resolve(result);
-          }, (err)=> {
-            reject('An error occurs while searching for files in ' + __glob, err);
-          });
+        this._filterDirs(matches, extensionList, ignoredDirs).then((result) => {
+          resolve(result);
+        }, (err) => {
+          reject('An error occurs while searching for files in ' + __glob, err);
+        });
       });
     });
   }
@@ -95,7 +103,7 @@ class FileFinder {
   _getRegexForFileExtension(extensionList) {
 
     var result = [];
-    for(let extension of extensionList) {
+    for (let extension of extensionList) {
       result.push(this.fileExtensionObj[extension]);
     }
 
