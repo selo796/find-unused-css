@@ -151,7 +151,7 @@ class Scanner {
     this.conf.options = (this.conf.options || {});
     console.log(this.conf.options.htmlAnalyzing);
 
-    this.conf.options.htmlAnalyzing = this.conf.options.htmlAnalyzing !== undefined ? this.conf.options.htmlAnalyzing : true;
+    this.conf.options.htmlAnalyzing = this.conf.options.htmlAnalyzing === false ? false : true;
     this.conf.options.reactAnalyzing = this.conf.options.reactAnalyzing ? this.conf.options.reactAnalyzing : false;
     this.conf.options.jQueryAnalyzing = this.conf.options.jQueryAnalyzing ? this.conf.options.jQueryAnalyzing : false;
     console.log(this.conf.options.htmlAnalyzing);
