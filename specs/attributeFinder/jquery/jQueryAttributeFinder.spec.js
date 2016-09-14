@@ -240,7 +240,7 @@ describe('jQuery Attribute Finder Testing', function () {
     });
 
     xit('should ignore addClass and append comments ', (done) => {
-
+        // TODO
     });
 
     it('should return all attributes from addClass and append', (done) => {
