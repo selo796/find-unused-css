@@ -1,7 +1,7 @@
 'use strict';
 
 let Strategy = require('./strategy').AbstractAttributeFinder;
-const returnRegex = /return.\(([^)]+)\)/g;
+const returnRegex = /return.?\(([^)]+)\)/g;
 const parenthesesRegex = /\(([^)]+)\)/g;
 
 class ReactAttributeFinder extends Strategy {
@@ -39,7 +39,7 @@ class ReactAttributeFinder extends Strategy {
         }
 
       }, (err) => {
-        reject('An error occurs while reading the file: ' + reactFile);
+        reject(err);
       });
     });
   }

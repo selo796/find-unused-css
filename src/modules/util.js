@@ -14,7 +14,7 @@ class Util {
         return new Promise(function (resolve, reject) {
             fs.readFile(filePath, 'utf8', function (err, data) {
                 if (err) {
-                    reject(err);
+                    reject('An error occurs while reading the file: ' + filePath);
                 }
                 resolve(data);
             });
