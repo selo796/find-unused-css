@@ -64,7 +64,7 @@ class Scanner {
       if (this.conf.options.htmlAnalyzing) {
         fileExtensions.push('HTML');
       }
-      if (this.conf.options.reactAnalyzing) {
+      if (this.conf.options.reactAnalyzing || this.conf.options.jQueryAnalyzing ) {
         fileExtensions.push('JS');
       }
 
@@ -149,9 +149,12 @@ class Scanner {
       throw 'Please check your config file. No cssFiles is defined.';
     }
     this.conf.options = (this.conf.options || {});
-    this.conf.options.htmlAnalyzing = this.conf.options.htmlAnalyzing ? this.conf.options.htmlAnalyzing : true;
+    console.log(this.conf.options.htmlAnalyzing);
+
+    this.conf.options.htmlAnalyzing = this.conf.options.htmlAnalyzing !== undefined ? this.conf.options.htmlAnalyzing : true;
     this.conf.options.reactAnalyzing = this.conf.options.reactAnalyzing ? this.conf.options.reactAnalyzing : false;
     this.conf.options.jQueryAnalyzing = this.conf.options.jQueryAnalyzing ? this.conf.options.jQueryAnalyzing : false;
+    console.log(this.conf.options.htmlAnalyzing);
 
     return true;
   }
