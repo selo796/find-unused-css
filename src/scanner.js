@@ -27,7 +27,9 @@ class Scanner {
       if (this.conf.options.htmlAnalyzing && /\.html$/.test(file)) {
         // Add all promises in an array inorder to use Promise.all
         attributePromises.push(this._attributeFinderHTML.execute(file));
-      } else if (/\.js$/.test(file)) {
+      }
+      /* istanbul ignore else */
+      else if (/\.js$/.test(file)) {
         // Add all promises in an array inorder to use Promise.all
         if (this.conf.options.reactAnalyzing) {
           attributePromises.push(this._attributeFinderReact.execute(file));
@@ -64,7 +66,7 @@ class Scanner {
       if (this.conf.options.htmlAnalyzing) {
         fileExtensions.push('HTML');
       }
-      if (this.conf.options.reactAnalyzing || this.conf.options.jQueryAnalyzing ) {
+      if (this.conf.options.reactAnalyzing ||  this.conf.options.jQueryAnalyzing) {
         fileExtensions.push('JS');
       }
 
@@ -149,12 +151,9 @@ class Scanner {
       throw 'Please check your config file. No cssFiles is defined.';
     }
     this.conf.options = (this.conf.options || {});
-    console.log(this.conf.options.htmlAnalyzing);
-
     this.conf.options.htmlAnalyzing = this.conf.options.htmlAnalyzing === false ? false : true;
     this.conf.options.reactAnalyzing = this.conf.options.reactAnalyzing ? this.conf.options.reactAnalyzing : false;
     this.conf.options.jQueryAnalyzing = this.conf.options.jQueryAnalyzing ? this.conf.options.jQueryAnalyzing : false;
-    console.log(this.conf.options.htmlAnalyzing);
 
     return true;
   }

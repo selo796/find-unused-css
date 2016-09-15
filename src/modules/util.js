@@ -1,6 +1,8 @@
 'use strict';
 var fs = require('fs');
 let htmlparser = require('htmlparser2');
+const commentStartRegex = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g;
+const commentSlashtRegex = /(\/\/.*)/g;
 
 class Util {
     constructor() {
@@ -10,11 +12,19 @@ class Util {
         };
     }
 
-    readFile(filePath) {
-        return new Promise(function (resolve, reject) {
-            fs.readFile(filePath, 'utf8', function (err, data) {
+    _removeComments(fileAsText) {
+        fileAsText = fileAsText.replace(commentStartRegex, '');
+        return fileAsText.replace(commentSlashtRegex, '');
+    }
+
+    readFile(filePath, removeComments) {
+        return new Promise((resolve, reject)=> {
+            fs.readFile(filePath, 'utf8', (err, data)=> {
                 if (err) {
-                    reject('An error occurs while reading the file: ' + filePath);
+                    return reject('An error occurs while reading the file: ' + filePath);
+                }
+                if(removeComments){
+                    data = this._removeComments(data);
                 }
                 resolve(data);
             });

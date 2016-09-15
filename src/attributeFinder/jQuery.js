@@ -25,7 +25,7 @@ class jQueryAttributeFinder extends Strategy {
   }
   findAttribute(reactFile) {
     return new Promise((resolve, reject) => {
-      this._util.readFile(reactFile).then((file) => {
+      this._util.readFile(reactFile, true).then((file) => {
         let resultPromiseList = [];
         if (classRegex.test(file)) {
           let addClassStrList = (file.match(classRegex));

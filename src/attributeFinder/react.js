@@ -8,7 +8,7 @@ class ReactAttributeFinder extends Strategy {
 
   findAttribute(reactFile) {
     return new Promise((resolve, reject) => {
-      this._util.readFile(reactFile).then((file) => {
+      this._util.readFile(reactFile, true).then((file) => {
         if (returnRegex.test(file)) {
           let resultPromiseList = [];
           let returnStrList = (file.match(returnRegex));

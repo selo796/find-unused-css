@@ -239,8 +239,14 @@ describe('jQuery Attribute Finder Testing', function () {
         });
     });
 
-    xit('should ignore addClass and append comments ', (done) => {
-        // TODO
+    it('should ignore addClass and append comments ', (done) => {
+        s.findAttribute('./specs/attributeFinder/jquery/testFiles/fileWithComment.js').then((selectors) => {
+            expect(selectors).toEqual({ _class: ['X', 'Y', 'selected', 'secondClass'], _id: [] });
+            done();
+        }, (err) => {
+            expect(err).not.toBeDefined();
+            done();
+        });
     });
 
     it('should return all attributes from addClass and append', (done) => {
