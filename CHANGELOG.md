@@ -1,5 +1,10 @@
 # find-unused-css Changelog
 
+## v0.7.0
+  * enabled jQuery file analyzing
+  * fixed some bugs
+  * Improved README.md
+
 ## v0.6.1
   * fixed some bugs
   * Improved README.md

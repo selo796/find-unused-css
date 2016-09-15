@@ -32,7 +32,8 @@ Create a config file namely "*findUnusedCss.json*" with following options:
   // optins for analyzing
   "options" : {
     "htmlAnalyzing": true|false, // default true
-    "reactAnalyzing": true|false // default false
+    "reactAnalyzing": true|false, // default false
+    "jQueryAnalyzing": true|false // default false
   },
   // list of folders, which are excluded during analyzing
   "excludes": ["./node_modules"]
@@ -53,11 +54,15 @@ After running *find-unused-css* you will get two questions from command line
 
   3. **Enable Html file analzing**
 
-  Enter 1 for enabling html file analyze, 0 otherwise.
+  Enter 1 for enabling, 0 otherwise.
 
   4. **Enable React analzing**
 
-  Enter 1 for enabling react file analyze, 0 otherwise.
+  Enter 1 for enabling, 0 otherwise.
+
+  4. **Enable jQuery analzing**
+
+  Enter 1 for enabling, 0 otherwise.
 
 Once you answered these two questions, your css selectors are scanned for given directory.
 
