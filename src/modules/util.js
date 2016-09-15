@@ -1,7 +1,7 @@
 'use strict';
 var fs = require('fs');
 let htmlparser = require('htmlparser2');
-const commentStartRegex = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g;
+const commentStartRegex = /\/\*([^*]||(\*+([^*/]|[\r\n])))*\*\/+/g; // hang of /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g;
 const commentSlashtRegex = /(\/\/.*)/g;
 
 class Util {
@@ -14,7 +14,8 @@ class Util {
 
     _removeComments(fileAsText) {
         fileAsText = fileAsText.replace(commentStartRegex, '');
-        return fileAsText.replace(commentSlashtRegex, '');
+        fileAsText = fileAsText.replace(commentSlashtRegex, '' );
+        return fileAsText;
     }
 
     readFile(filePath, removeComments) {

@@ -38,6 +38,7 @@ class Scanner {
         }
       }
     }
+
     return attributePromises;
   }
 
@@ -85,6 +86,7 @@ class Scanner {
             Promise.all(this._getCssSelectors(cssFiles)).then((cssSelectorList) => {
               // find all class selectors in html files
               Promise.all(this._getAttributes(files)).then((attributeObjList) => {
+
 
                 for (let attr of attributeObjList) {
                   attributes._class = (attributes._class).concat(attr._class.filter((item) => {
