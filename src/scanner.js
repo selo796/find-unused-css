@@ -6,7 +6,7 @@ let SelectorFinderModule = require('./css/selectorFinder');
 let AttributeFinder = require('./attributeFinder/strategy').attributeFinder;
 let HTMLAttributeFinder = require('./attributeFinder/html');
 let ReactAttributeFinderModele = require('./attributeFinder/react');
-let JQueryAttributeFinderModele = require('./attributeFinder/jquery');
+let JQueryAttributeFinderModele = require('./attributeFinder/jQuery');
 
 let spinner = new Spinner('Analyzing .. %s');
 
