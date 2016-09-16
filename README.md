@@ -82,7 +82,7 @@ Issues can be reported on the [issue tracker](https://github.com/selo796/find-un
 
  - Improving the output instead of command line
  - Support for attribute selectors
- - Support for AngularJS, jquery
+ - Support for AngularJS
 
 I am very happy for every feedback...
 
