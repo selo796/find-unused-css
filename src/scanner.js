@@ -67,6 +67,9 @@ class Scanner {
       if (this.conf.options.htmlAnalyzing) {
         fileExtensions.push('HTML');
       }
+      if (this.conf.options.tplAnalyzing) {
+        fileExtensions.push('TPL');
+      }
       if (this.conf.options.reactAnalyzing ||  this.conf.options.jQueryAnalyzing) {
         fileExtensions.push('JS');
       }

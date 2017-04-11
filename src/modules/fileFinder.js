@@ -9,6 +9,7 @@ class FileFinder {
     this.fileExtensionObj = {
       JS: /\.js$/,
       HTML: /\.html$/,
+      TPL: /\.tpl$/,
       CSS: /\.css$/,
     };
   }

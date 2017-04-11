@@ -32,6 +32,7 @@ Create a config file namely "*findUnusedCss.json*" with following options:
   // optins for analyzing
   "options" : {
     "htmlAnalyzing": true|false, // default true
+    "tplAnalyzing": true|false, // default false
     "reactAnalyzing": true|false, // default false
     "jQueryAnalyzing": true|false // default false
   },

@@ -1,5 +1,9 @@
 # find-unused-css Changelog
 
+## v0.8.0
+  * enabled tpl file analyzing
+  * Improved README.md
+
 ## v0.7.0
   * enabled jQuery file analyzing
   * fixed some bugs
