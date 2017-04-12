@@ -15,7 +15,6 @@ class Scanner {
   constructor(configObj) {
     this.conf = configObj;
     this._fileFinder = new FileFinderModule();
-    this._selectorFinder = new SelectorFinderModule();
     this._attributeFinderHTML = new AttributeFinder(new HTMLAttributeFinder());
     this._attributeFinderReact = new AttributeFinder(new ReactAttributeFinderModele());
     this._attributeFinderJQuery = new AttributeFinder(new JQueryAttributeFinderModele());
@@ -46,7 +45,7 @@ class Scanner {
     let cssSelectorPromises = [];
     for (let cssFile of cssFiles) {
       // Add all promises in an array inorder to use Promise.all
-      cssSelectorPromises.push(this._selectorFinder.run(cssFile));
+      cssSelectorPromises.push(new SelectorFinderModule().run(cssFile));
     }
     return cssSelectorPromises;
   }
@@ -81,12 +80,25 @@ class Scanner {
             _class: [],
             _id: []
           };
+          let cssSelectors = {
+            _class : [],
+            _id: []
+          };
           let cssSelectorPromises = [];
           let listOfUnusedClasses = [];
           let listOfUnusedIds = [];
 
           this._fileFinder.getFiles(this.conf.cssFiles, ['CSS']).then((cssFiles) => {
             Promise.all(this._getCssSelectors(cssFiles)).then((cssSelectorList) => {
+              for (const selectors of cssSelectorList) {
+                cssSelectors._class = cssSelectors._class.concat(selectors._class.filter(function (item) {
+                    return cssSelectors._class.indexOf(item) < 0;
+                }));
+
+                cssSelectors._id = cssSelectors._id.concat(selectors._id.filter(function (item) {
+                    return cssSelectors._id.indexOf(item) < 0;
+                }));
+              }
               // find all class selectors in html files
               Promise.all(this._getAttributes(files)).then((attributeObjList) => {
 
@@ -101,14 +113,14 @@ class Scanner {
                 }
 
                 let countUnusedIds = 0;
-                this._selectorFinder.selectors._class.forEach(function (_class) {
+                cssSelectors._class.forEach(function (_class) {
                   /* istanbul ignore else */
                   if (attributes._class.indexOf(_class) === -1) {
                     listOfUnusedClasses.push(_class);
                   }
                 });
 
-                this._selectorFinder.selectors._id.forEach(function (_id) {
+                cssSelectors._id.forEach(function (_id) {
                   /* istanbul ignore else */
                   if (attributes._id.indexOf(_id) === -1) {
                     listOfUnusedIds.push(_id);
@@ -120,8 +132,8 @@ class Scanner {
 
                 resolve({
                   totalNumberOfScannedFiles: files.length,
-                  totalNumberOfClassSelectors: this._selectorFinder.selectors._class.length,
-                  totalNumberOfIdSelectors: this._selectorFinder.selectors._id.length,
+                  totalNumberOfClassSelectors: cssSelectors._class.length,
+                  totalNumberOfIdSelectors: cssSelectors._id.length,
                   numberOfUnusedIds: countUnusedIds,
                   unusedClasses: listOfUnusedClasses,
                   unusedIds: listOfUnusedIds,

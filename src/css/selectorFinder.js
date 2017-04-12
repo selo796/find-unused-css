@@ -25,8 +25,7 @@ class SelectorFinder {
 
     if (classRegex.test(text)) {
       text = text.match(classRegex);
-
-      var currentClass;
+      let currentClass;
 
       text.forEach((_class) => {
         currentClass = _class.split(splitter);
@@ -100,7 +99,7 @@ class SelectorFinder {
       });
 
       lr.on('end', () => {
-        resolve(cssFile + 'is finished');
+        resolve(this.selectors);
       });
     });
   }

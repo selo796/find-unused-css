@@ -99,39 +99,28 @@ describe('Scanner Testing', function () {
         source_files: ['./specs/attributeFinder/html/testAttributeFinderInHtml/**/*.html'],
         cssFiles: ['./specs/css/**/main.css', './specs/css/**/id.css']
       });
+    const expectedResult = {
+        totalNumberOfScannedFiles: 2,
+        totalNumberOfClassSelectors: 3,
+        totalNumberOfIdSelectors: 2,
+        numberOfUnusedIds: 2,
+        unusedClasses: ['text-transform--none', 'myClass', 'myTestClass'],
+        unusedIds: ['myTestID1', 'myTestID'],
+      };
     s.run().then((result) => {
-      expect(result).toEqual(
-        {
-          totalNumberOfScannedFiles: 2,
-          totalNumberOfClassSelectors: 3,
-          totalNumberOfIdSelectors: 2,
-          numberOfUnusedIds: 2,
-          unusedClasses: ['text-transform--none', 'myClass', 'myTestClass'],
-          unusedIds: ['myTestID1', 'myTestID'],
-        });
-      done();
-    }, (err) => {
-      expect(err).not.toBeDefined({});
-      done();
-    });
-  });
+      expect(expectedResult.totalNumberOfScannedFiles).toEqual(result.totalNumberOfScannedFiles);
+      expect(expectedResult.totalNumberOfClassSelectors).toEqual(result.totalNumberOfClassSelectors);
+      expect(expectedResult.totalNumberOfIdSelectors).toEqual(result.totalNumberOfIdSelectors);
+      expect(expectedResult.numberOfUnusedIds).toEqual(result.numberOfUnusedIds);
 
-  it('should return all unused id and class selectors by using glob', (done) => {
-    var s = new Scanner(
-      {
-        source_files: ['./specs/attributeFinder/html/testAttributeFinderInHtml/**/*.html'],
-        cssFiles: ['./specs/css/**/id.css', './specs/css/**/main.css'],
-      });
-    s.run().then((result) => {
-      expect(result).toEqual(
-        {
-          totalNumberOfScannedFiles: 2,
-          totalNumberOfClassSelectors: 3,
-          totalNumberOfIdSelectors: 2,
-          numberOfUnusedIds: 2,
-          unusedClasses: ['text-transform--none', 'myClass', 'myTestClass'],
-          unusedIds: ['myTestID1', 'myTestID'],
-        });
+      expect(expectedResult.unusedClasses.length).toEqual(result.unusedClasses.length);
+      expect(result.unusedClasses.indexOf('text-transform--none') > -1).toBeTruthy();
+      expect(result.unusedClasses.indexOf('myClass') > -1).toBeTruthy();
+      expect(result.unusedClasses.indexOf('myTestClass') > -1).toBeTruthy();
+
+      expect(expectedResult.unusedIds.length).toEqual(result.unusedIds.length);
+      expect(result.unusedIds.indexOf('myTestID') > -1).toBeTruthy();
+      expect(result.unusedIds.indexOf('myTestID1') > -1).toBeTruthy();
       done();
     }, (err) => {
       expect(err).not.toBeDefined({});
@@ -163,24 +152,36 @@ describe('Scanner Testing', function () {
 
   it('should return all unused id and class selectors by using html as well as react files', (done) => {
     var reactFilePath = './specs/attributeFinder/react/testFiles/test1.js';
-    var s = new Scanner(
-      {
-        source_files: ['./specs/attributeFinder/html/testAttributeFinderInHtml/**/*.html', reactFilePath],
-        cssFiles: ['./specs/css/**/id.css', './specs/css/**/main.css', './specs/css/**/react.css'],
-        options: {
-          reactAnalyzing: true
-        }
-      });
+    var s = new Scanner({
+      source_files: ['./specs/attributeFinder/html/testAttributeFinderInHtml/**/*.html', reactFilePath],
+      cssFiles: ['./specs/css/**/id.css', './specs/css/**/main.css', './specs/css/**/react.css'],
+      options: {
+        reactAnalyzing: true
+      }
+    });
+    const expectedResult = {
+      totalNumberOfScannedFiles: 3,
+      totalNumberOfClassSelectors: 5,
+      totalNumberOfIdSelectors: 2,
+      numberOfUnusedIds: 2,
+      unusedClasses: ['text-transform--none', 'myClass', 'myTestClass', 'react-main-one'],
+      unusedIds: ['myTestID1', 'myTestID'],
+    }
     s.run().then((result) => {
-      expect(result).toEqual(
-        {
-          totalNumberOfScannedFiles: 3,
-          totalNumberOfClassSelectors: 5,
-          totalNumberOfIdSelectors: 2,
-          numberOfUnusedIds: 2,
-          unusedClasses: ['text-transform--none', 'myClass', 'myTestClass', 'react-main-one'],
-          unusedIds: ['myTestID1', 'myTestID'],
-        });
+      expect(expectedResult.totalNumberOfScannedFiles).toEqual(result.totalNumberOfScannedFiles);
+      expect(expectedResult.totalNumberOfClassSelectors).toEqual(result.totalNumberOfClassSelectors);
+      expect(expectedResult.totalNumberOfIdSelectors).toEqual(result.totalNumberOfIdSelectors);
+      expect(expectedResult.numberOfUnusedIds).toEqual(result.numberOfUnusedIds);
+
+      expect(expectedResult.unusedClasses.length).toEqual(result.unusedClasses.length);
+      expect(result.unusedClasses.indexOf('text-transform--none') > -1).toBeTruthy();
+      expect(result.unusedClasses.indexOf('myClass') > -1).toBeTruthy();
+      expect(result.unusedClasses.indexOf('myTestClass') > -1).toBeTruthy();
+      expect(result.unusedClasses.indexOf('react-main-one') > -1).toBeTruthy();
+
+      expect(expectedResult.unusedIds.length).toEqual(result.unusedIds.length);
+      expect(result.unusedIds.indexOf('myTestID') > -1).toBeTruthy();
+      expect(result.unusedIds.indexOf('myTestID1') > -1).toBeTruthy();
       done();
     }, (err) => {
       expect(err).not.toBeDefined();

@@ -61,7 +61,7 @@ After running *find-unused-css* you will get two questions from command line
 
   Enter 1 for enabling, 0 otherwise.
 
-  4. **Enable jQuery analzing**
+  5. **Enable jQuery analzing**
 
   Enter 1 for enabling, 0 otherwise.
 

@@ -1,4 +1,7 @@
 # find-unused-css Changelog
+## v0.8.1
+  * minor bug fixing
+  * Improved README.md
 
 ## v0.8.0
   * enabled tpl file analyzing
